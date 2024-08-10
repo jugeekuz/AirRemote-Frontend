@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes custom-ping {
+	75%, 100% {
+	  transform: scale(2);
+	  opacity: 0;
+	}
+  }
+  
+  .animate-custom-ping {
+	animation: custom-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
