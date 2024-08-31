@@ -16,7 +16,10 @@ module.exports ={
       '3xl': '2048px',
     },
     extend: {
-      
+      scale: {
+        '110': '1.10',
+        '105': '1.05',
+      },
       colors:{
         primary: {
           light: '#ffffff',
@@ -34,7 +37,31 @@ module.exports ={
       },
       height: {
         '100dvh': '100dvh'
-      }
+      },
+      keyframes: {
+        pop: {
+          '0%': { transform: 'scale(1)' },
+          '30%': { transform: 'scale(1.2)' },
+          '50%': { transform: 'scale(0.9)' },
+          '70%': { transform: 'scale(1.1)' },
+          '100%': { transform: 'scale(1)' },
+        },
+        shake: {
+          '0%': {
+            transform: 'rotate(1deg)',
+          },
+          '50%': {
+            transform: 'rotate(-1.5deg)',
+          },
+          '100%': {
+            transform: 'rotate(1deg)',
+          }
+        },
+      },
+      animation: {
+        pop: 'pop 0.6s ease-in-out infinite',
+        shake: 'shake 0.2s infinite ease-in-out',
+      },
     },
   },
   darkMode: "class",

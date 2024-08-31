@@ -1,36 +1,62 @@
-import React, {useState, useEffect} from "react";
-import { Power } from "lucide-react";
+import React, {useState, useEffect, useRef} from "react";
+import { Power, Check, } from "lucide-react";
 import {Spinner} from "@nextui-org/react";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
 
-const RemoteButton = () => {
-	const [loading, setLoading] = useState('idle');
-	const {isOpen, onOpen, onOpenChange} = useDisclosure();
+import config from "../configs/config";
+import { wsHandler } from "../services/websocket";
 
-	const load = () => {
-		setLoading('error'); // Set loading to 'error' for demonstration
+const RemoteButton = (props) => {
+	const responseTimeout = 15000;	
+	const successAnimationTimeout = 500;
+	const wsUrl = config.wssUrl;
+	
+	const ws_payload = { 
+		"action": "cmd",
+		"cmd": "execute",
+		"remoteName": props.remoteName,
+		"buttonName": props.buttonName
+	}
+
+	const successResponseFormat = (data)  => {
+		const response = JSON.parse(data);
+		return (response.action === "ack");
 	};
 
-	// Effect to handle the 'error' case and open the modal
+	const {isOpen, onOpen, onOpenChange} = useDisclosure();
+	const [loadingState, setLoadingState] = useState('idle');
+	const errorMessage = useRef("Unexpected Error Occured.");
+	
+	const setErrorMessage = (msg) => (errorMessage.current = msg);
+
+	const handlePress = () => {		
+		setLoadingState('loading');
+		wsHandler(wsUrl, ws_payload, responseTimeout, successResponseFormat, setLoadingState, setErrorMessage);
+	}
+
 	useEffect(() => {
-		if (loading === 'error') {
+		if (loadingState === 'error') {
+			setLoadingState('idle');
 			onOpen(); // Open the modal when loading is 'error'
 		}
-	}, [loading, onOpen]);
+	}, [loadingState, onOpen]);
 
 	const renderButton = () => {
-		switch (loading) {
-			case 'idle':
-				return <Power onClick={load} color={"#22c55e"} size={17} strokeWidth={"2.5px"} />;
+		switch (loadingState) {
 			case 'loading':
 				return <Spinner size="md" color="default" />;
 			case 'success':
-				return <div className="absolute w-7 h-7 border-5 border-green-500 rounded-full animate-custom-ping"></div>;
+				// Render animation and then go back to idle
+				setTimeout(() => setLoadingState('idle'), successAnimationTimeout);
+				return <Check color={"#22c55e"} size={20} strokeWidth={"3px"} />;
+			default:
+				return <Power onClick={handlePress} color={"#22c55e"} size={17} strokeWidth={"2.5px"} />;
 		}
 	}
 
 	return (
 		<>
+			{/* Modal displaying error information */}
 			<Modal isOpen={isOpen} onOpenChange={onOpenChange} placement={"top"}>
 				<ModalContent>
 				{(onClose) => (
@@ -38,7 +64,7 @@ const RemoteButton = () => {
 					<ModalHeader className="flex flex-col gap-1 mt-2">Error</ModalHeader>
 					<ModalBody>
 						<p> 
-						Unexpected error occured! Please try again later.
+						{errorMessage.current}
 						</p>
 					</ModalBody>
 					<ModalFooter>
@@ -51,9 +77,13 @@ const RemoteButton = () => {
 				</ModalContent>
 			</Modal>
 			<div className={`flex flex-row justify-center items-center cursor-pointer rounded-full w-9 h-9 bg-gray-50 shadow-md mr-2 
-							${(loading == 'idle') ?
+							${(loadingState !== 'loading') ?
 							"border-2 border-green-500"
-							: ""}`}>
+							: ""}
+							${(loadingState === 'success') ?
+							"animate-pop": ""
+							}
+							`}>
 				{
 					renderButton()
 				}

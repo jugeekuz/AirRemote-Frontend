@@ -1,4 +1,5 @@
 import React, { useState, useContext, createContext } from "react";
+import { useLocation, Link } from 'react-router-dom';
 import { ChevronFirst, ChevronLast, MoreVertical, MoonStar } from "lucide-react";
 const SidebarContext = createContext();
 export const Sidebar = (props) => {
@@ -49,28 +50,32 @@ export const Sidebar = (props) => {
 
 export const SidebarItem = (props) => {
 	const {expanded} = useContext(SidebarContext);
+	const location = useLocation();
+	const isActive = location.pathname.includes(props.to) && props.to !== "/";
 	return (
-		<li className={`
-			relative flex justify-center items-center py-2 px-2 my-1
-			font-medium rounded-md cursor-pointer
-			transition-colors ${
-				props.active
-				? "bg-gradient-to-tr from-green-200 to-green-100 text-green-800"
-				: "hover:bg-green-50 text-gray-800"
-			} group
-			`}>
-			{props.icon}
-			<span className={`overflow-hidden ${expanded? `w-52 ml-3` : `w-0`} font-sans`}>{props.text}</span>
-			{props.alert && <div className={`absolute right-2 w-2 h-2 rounded bg-green-400 ${expanded ? "" : "top-2"}`}></div>}
-			
-			{!expanded && 
-			<div className={`
-				absolute left-full rounded-md 
-				px-2 py-1 ml-6
-				bg-green-100 text-gray-900 text-sm
-				invisible -translate-x-3 transition-all
-				group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
-				`}>{props.text}</div>}
-		</li>
+		<Link to={props.to}>
+			<li className={`
+				relative flex justify-center items-center py-2 px-2 my-1
+				font-medium rounded-md cursor-pointer
+				transition-colors ${
+					isActive
+					? "bg-gradient-to-tr from-green-200 to-green-100 text-green-800"
+					: "hover:bg-green-50 text-gray-800"
+				} group
+				`}>
+				{props.icon}
+				<span className={`overflow-hidden ${expanded? `w-52 ml-3` : `w-0`} font-sans`}>{props.text}</span>
+				{props.alert && <div className={`absolute right-2 w-2 h-2 rounded bg-green-400 ${expanded ? "" : "top-2"}`}></div>}
+				
+				{!expanded && 
+				<div className={`
+					absolute left-full rounded-md 
+					px-2 py-1 ml-6
+					bg-green-100 text-gray-900 text-sm
+					invisible -translate-x-3 transition-all
+					group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
+					`}>{props.text}</div>}
+			</li>
+		</Link>
 	)
 }

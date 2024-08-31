@@ -2,7 +2,7 @@ import React from "react";
 import Active from '../assets/icons/active.svg?react';
 import Inactive from '../assets/icons/inactive.svg?react';
 import acImg from '../assets/imgs/airconditioner.png';
-const InfoBar = () => {
+const InfoBar = (props) => {
 	return (
 		<div className=" p-1">
             <div className={`flex justify-center align-center flex-col w-full bg-gray-950 rounded-md p-4 shadow-2xl 
@@ -24,7 +24,7 @@ const InfoBar = () => {
 										text-xl
 										lg:text-2xl
 										`}>
-							Fujitsu AC
+							{props.remoteName}
 						</span>
 						<span className="font-sans font-normal text-gray-500 
 										text-sm
@@ -47,12 +47,12 @@ const InfoBar = () => {
 						<span className="font-sans font-semibold text-white
 										text-lg
 										lg:text-2xl" >
-							Living Room
+							{props.deviceName}
 						</span>
 						<span className="font-sans font-normal text-gray-500 
 										text-sm
 										lg:text-md">
-							Firebeetle-32
+							{props.macAddress}
 						</span>
 					</div>
 					{/* */}
@@ -60,9 +60,9 @@ const InfoBar = () => {
 						<span className="font-sans font-semibold text-white 
 										text-lg
 										lg:text-2xl">
-							Connected
+							{props.isConnected ? "Connected" : "Disconnected"}
 						</span>
-						<div className="w-3 ml-1"><Active/></div>
+						<div className="w-3 ml-1">{props.isConnected ? <Active/> : <Inactive/>}</div>
 					</div>
 				</div>
 			</div>

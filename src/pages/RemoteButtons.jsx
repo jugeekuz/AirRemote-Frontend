@@ -1,74 +1,93 @@
-import React from "react";
+import React, { useRef, useEffect, useState, createContext } from "react";
+
+import { useParams } from "react-router-dom"
+import { Pencil } from "lucide-react";
+
+import config from "../configs/config";
+import useFetchMemo from "../hooks/useFetchMemo";
+
+import { EditModeProvider } from "../contexts/EditModeContext";
+import { DraggingContext, DraggingProvider } from "../contexts/DraggingContext";
+
+import TopToolbar from '../components/TopToolbar';
+import InfoBar from '../components/InfoBar';
+import { Toolbar } from "../components/Toolbar";
+import { TileGrid } from '../components/TileGrid';
+import { ButtonTile } from '../components/ButtonTile';
+
 
 const RemoteButtons = () => {
+	const apiUrl = config.apiUrl;
+	const { remoteName } = useParams();
+
+	const macAddress = useRef(null);
+  const [isConnected, setIsConnected] = useState(false);
+  const { data: remoteData, loading, error, refetch: remoteRefetch } = useFetchMemo(`${apiUrl}/remotes/${remoteName}`);
+  const { data: deviceData, loading: deviceLoading, error: deviceError, refetch: deviceRefetch } = useFetchMemo(macAddress.current ? `${apiUrl}/devices/${macAddress.current}` : null);
+
+  useEffect(() => {
+		if (!remoteData?.macAddress) return;
+    macAddress.current = remoteData.macAddress;
+    deviceRefetch();
+  }, [remoteData]);
+
+  useEffect(() => {
+		if (!deviceData?.connectionId) return;
+    setIsConnected(deviceData?.connectionId ? true : false);
+  }, [deviceData])
+
   return (
-	<div className="flex w-screen h-screen bg-white">
-        
-	<Sidebar>          
-	  <SidebarItem icon={<LayoutDashboard size={20}/>} text="Dashboard" />
-	  <SidebarItem icon={<SatelliteDish size={20}/>} text="Remotes" active/>
-	  <SidebarItem icon={<Microchip size={20}/>} text="Devices"/>
-	  <SidebarItem icon={<CalendarFold size={20}/>} text="Automations"/>
-	</Sidebar>
+        <div className="w-full overflow-x-hidden overflow-y-scroll">
 
-	{/* Main Container */}
-	<div className="w-full overflow-x-hidden overflow-y-scroll">
+          {/* Top Toolbar */}
+          <TopToolbar/>
+          <EditModeProvider>
+          
+            {/* Info Bar */}
+            <InfoBar 
+              macAddress={deviceData?.macAddress ? deviceData?.macAddress : "Loading.."} 
+              remoteName={remoteName}
+              deviceName={deviceData?.deviceName ? deviceData?.deviceName : "Loading.."}
+              isConnected={isConnected}
+            />
 
-	  {/* Top Toolbar */}
-	  <TopToolbar/>
+            {/* Secondary Toolbar */}
+            <div className="flex justify-between items-center flex-row mt-6 mb-3 ml-2">
+              <div className="flex items-center">
+                <span className="font-sans font-medium text-xl">
+                  Remote Buttons
+                </span>
+                <div className="flex justify-center items-center ml-2 rounded-lg w-6 h-6 bg-green-600">
+                  <span className="font-sans text-center text-white text-xs" >
+                    {/* Buttons Count */}
+                    {remoteData?.buttons && remoteData.buttons.length}
+                  </span>
+                </div>
+              </div>
+              <div className="pr-3">
+                <Toolbar onAddButton={remoteRefetch}/>
+              </div>
+            </div>
 
-	  {/* Info Bar */}
-	  <InfoBar/>
-
-	  {/* Secondary Toolbar */}
-	  <div className="flex justify-between items-center flex-row mt-6 mb-3 ml-2">
-		<div className="flex items-center">
-		  <span className="font-sans font-medium text-xl">
-			Remote Buttons
-		  </span>
-		  <div className="flex justify-center items-center ml-2 rounded-lg w-6 h-6 bg-green-600">
-			<span className="font-sans text-center text-white text-xs">
-			  20
-			</span>
-		  </div>
-		</div>
-		<div className="pr-3">
-		  <Pencil size={20}/>
-		</div>
-	  </div>
-
-	  {/* Buttons Grid */}
-	  <TileGrid>
-		{Array.from({length: 20}).map((_, i) => (
-		  <Tile key={i}>
-			<div className="flex flex-col w-full h-full">
-
-			  <div className="flex h-1/2 w-full items-center justify-between ">
-				<div className="flex flex-row justify-center items-center cursor-pointer rounded-md w-8 h-8 border-1 border-gray-300 bg-gray-50 ml-2">
-				  <Grip size={15} strokeWidth={"2.5px"} />
-				</div> 
-
-				<div className="flex flex-row justify-center items-center cursor-pointer rounded-full w-9 h-9 border-2 border-green-500 bg-gray-50 shadow-md mr-2">
-				  <Power color={"#22c55e"} size={17} strokeWidth={"2.5px"} />
-				</div> 
-			  </div>
-
-			  <div className="flex h-1/2 w-full align-items justify-between">
-				<div className="flex flex-col justify-center items-left text-left ml-2">
-				  <span className="font-sans font-normal text-xs text-gray-500">State</span>
-				  <span className="font-sans font-medium text-sm text-gray-800">
-					{options[Math.floor(Math.random() * options.length)]}
-				  </span>
-				</div>
-			  </div>
-			</div>
-		  </Tile>
-		  ))}
-		<AddBorderButton/>
-	  </TileGrid> 
-	</div>
-  </div>
-	);
+            {/* Buttons Grid */}
+            {remoteData && remoteData?.buttons 
+              ?
+              <DraggingProvider>
+                <TileGrid>
+                  {/* This is a patch otherwise the component wont rerender when doing refetchRemote */}
+                  {console.log(remoteData)}
+                  {
+                    remoteData.buttons.map((item, index) => 
+                      <ButtonTile key={index} id={index} item={item} state={true} remoteName={remoteName} refetch={remoteRefetch}/>
+                    )}
+                  {/* <AddBorderButton/> */}
+                </TileGrid> 
+              </DraggingProvider>
+              :<h1>Loading..</h1>
+            }
+          </EditModeProvider>
+        </div>
+);
 };
 
 export default RemoteButtons;
