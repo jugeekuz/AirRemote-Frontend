@@ -29,7 +29,7 @@ const InfoBar = (props) => {
 						<span className="font-sans font-normal text-gray-500 
 										text-sm
 										lg:text-md">
-							Air Conditioner
+							{props.category}
 						</span>
 					</div>
 				</div>

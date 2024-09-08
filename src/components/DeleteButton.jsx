@@ -1,19 +1,29 @@
+import { useEffect } from 'react';
 import { X, Minus } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
-import config from '../configs/config';
+
 import useDelete from '../hooks/useDelete';
-const RemoteDeleteButton = ({buttonName, refetch}) => {
-	const apiUrl = config.apiUrl;
+import useError from '../hooks/useError';
+
+import ErrorModal from './ErrorModal';
+const DeleteButton = ({url, refetch, position}) => {
 	const { remoteName } = useParams();
+	const attributes = useError("");
 
 	const { success, loading , error , refetch: deleteRefetch } = useDelete(null);
 	const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
 
 	const onPressYes = () => {
-		deleteRefetch(`${apiUrl}/remotes/${remoteName}/buttons/${buttonName}`).then(refetch);
+		deleteRefetch(url).then(refetch);
 		onClose();
 	}
+
+	useEffect(() => {
+		if (!error) return;
+		attributes.setError(error);
+	  },[error])	
+
 	return (
 		<>
 		<Modal isOpen={isOpen} onOpenChange={onOpenChange} placement={"top"}>
@@ -38,13 +48,14 @@ const RemoteDeleteButton = ({buttonName, refetch}) => {
 			)}
 			</ModalContent>
 		</Modal>
-		<div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 z-50">
+		<div className={`absolute z-[200] top-0 transform -translate-y-1/2 ${position == 'left' ? "-translate-x-1/4 left-0" :"translate-x-1/2 right-0"} `}>
 			<div onClick={onOpen} className=" flex flex-row justify-center items-center cursor-pointer rounded-full w-6 h-6 bg-gray-300 shadow-sm shadow-gray-500 mr-2 border-1 border-gray-300  opacity-80 backdrop-filter backdrop-blur-md">
 				<X color={"#000000"} size={14} strokeWidth={"2.5px"} />
 			</div>
 		</div>
+		<ErrorModal {...attributes}/>
 		</>
 	);
 };
 
-export default RemoteDeleteButton;
+export default DeleteButton;

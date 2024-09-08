@@ -6,6 +6,8 @@ const useFetchMemo = (url) => {
 	const [error, setError] = useState(null);
 	
 	const fetchData = useCallback(async () => {
+		if (!url) return;
+		
 		setLoading(true);
     	setError(null);
 
@@ -15,8 +17,6 @@ const useFetchMemo = (url) => {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 			const result = await response.json();
-			console.log("Refetched")
-			console.log(result.body)
 			setData(result.body);
 		} catch (error) {
 			setError(error.message);

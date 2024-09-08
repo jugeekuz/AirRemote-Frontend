@@ -5,18 +5,19 @@ export const  wsHandler = async (endpoint, message, timeout, successResponseForm
     socket = new WebSocket(endpoint);
 
 	socket.onopen = () => {
-		console.log('loaded');
-		console.log(JSON.stringify(message))
 		socket.send(JSON.stringify(message));
-
+		console.log("Websocket connection started");
+		console.log(`Sending message : ${JSON.stringify(message)}`)
 		timeoutId = setTimeout(() => {
 			setStatus('error');
+			setError("Timeout reached without response from remote end.");
 			socket.close();
 		}, timeout);
 	};
 
     socket.onmessage = (event) => {
 		clearTimeout(timeoutId);
+		console.log(`received ${event.data}`)
 		if(successResponseFormat(event.data)){
 			console.log('sucess');
 			console.log(event.data);
@@ -33,6 +34,7 @@ export const  wsHandler = async (endpoint, message, timeout, successResponseForm
 	socket.onerror = () => {
 		clearTimeout(timeoutId);
 		setStatus('error');
+		setError("Unexpected error occured during websocket connection with remote end.");
 		socket.close();
 	}
 	return;

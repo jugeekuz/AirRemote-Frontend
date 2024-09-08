@@ -17,12 +17,13 @@ const useDelete = (url) => {
 						'Content-Type': 'application/json',
 					},
 				});
-
-			await response.json();
+			const data = await response.json();
+			console.log(data);
 			if (!response?.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 			setSuccess(true);
+			
 		} catch(e) {
 			setError(e);
 		} finally {

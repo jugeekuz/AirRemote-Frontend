@@ -71,9 +71,16 @@ export const TileGrid = (props) => {
 			onDragEnd={handleDragEnd}
 			onDragStart={handleDragStart}
 		>
-			<div className="w-full grid grid-rows-10 grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 p-1 pr-2">
+			<div className="w-full grid grid-rows-2 grid-cols-2 gap-2 p-1 pr-2
+			xs:grid-cols-3
+			sm:grid-cols-4 
+			md:grid-cols-5
+			lg:grid-cols-7 
+			xl:grid-cols-10 
+			2xl:grid-cols-15
+			3xl:grid-cols-17">
 				<SortableContext items={childrenOrder.map(id => `${id}`)} strategy={rectSortingStrategy}>
-					{childrenOrder.map((orderIndex) => props.children[orderIndex])}
+					{props.size && childrenOrder.map((orderIndex) => props.children[orderIndex])}
 					<DragOverlay>
 						{activeId ? <div className="shadow-[0px_2px_5px_rgba(0,0,0,0.4)] shadow-gray-500 scale-105 rounded-lg">{props.children[activeId]}</div> : null}
 					</DragOverlay>

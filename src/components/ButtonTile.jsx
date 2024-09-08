@@ -10,10 +10,12 @@ import { CSS } from '@dnd-kit/utilities';
 import { EditModeContext } from '../contexts/EditModeContext';
 import { DraggingContext }  from '../contexts/DraggingContext';
 
+import config from '../configs/config'
 import RemoteButton from "./RemoteButton";
-import RemoteDeleteButton from "./RemoteDeleteButton";
+import DeleteButton from "./DeleteButton";
 
 export const ButtonTile = (props) => {
+	const apiUrl = config.apiUrl;
 	const { editMode } = useContext(EditModeContext);
 	const { dragging } = useContext(DraggingContext);
 
@@ -74,8 +76,7 @@ export const ButtonTile = (props) => {
 
 				</div>
 			</div>
-			
-			{editMode? <RemoteDeleteButton buttonName={props.item.buttonName} refetch={props.refetch}/>: null}
+			{editMode? <DeleteButton url={`${apiUrl}/remotes/${props.remoteName}/buttons/${props.item.buttonName}`} refetch={props.refetch}/>: null}
 			
 		</div>
 		

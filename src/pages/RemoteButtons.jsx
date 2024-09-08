@@ -1,29 +1,32 @@
-import React, { useRef, useEffect, useState, createContext } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom"
-import { Pencil } from "lucide-react";
 
 import config from "../configs/config";
+
 import useFetchMemo from "../hooks/useFetchMemo";
+import useError from "../hooks/useError";
 
 import { EditModeProvider } from "../contexts/EditModeContext";
-import { DraggingContext, DraggingProvider } from "../contexts/DraggingContext";
+import { DraggingProvider } from "../contexts/DraggingContext";
 
 import TopToolbar from '../components/TopToolbar';
 import InfoBar from '../components/InfoBar';
-import { Toolbar } from "../components/Toolbar";
+import Toolbar from "../components/Toolbar";
+import AddButtonModal from "../components/AddButtonModal";
 import { TileGrid } from '../components/TileGrid';
 import { ButtonTile } from '../components/ButtonTile';
-
-
+import ErrorModal from "../components/ErrorModal";
 const RemoteButtons = () => {
 	const apiUrl = config.apiUrl;
 	const { remoteName } = useParams();
+  const attributes = useError("");
 
 	const macAddress = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
-  const { data: remoteData, loading, error, refetch: remoteRefetch } = useFetchMemo(`${apiUrl}/remotes/${remoteName}`);
+  const { data: remoteData, loading, error: remoteError, refetch: remoteRefetch } = useFetchMemo(`${apiUrl}/remotes/${remoteName}`);
   const { data: deviceData, loading: deviceLoading, error: deviceError, refetch: deviceRefetch } = useFetchMemo(macAddress.current ? `${apiUrl}/devices/${macAddress.current}` : null);
+
 
   useEffect(() => {
 		if (!remoteData?.macAddress) return;
@@ -36,7 +39,18 @@ const RemoteButtons = () => {
     setIsConnected(deviceData?.connectionId ? true : false);
   }, [deviceData])
 
+  useEffect(() => {
+    if (!remoteError) return;
+    attributes.setError(remoteError);
+  },[remoteError])
+
+  useEffect(() => {
+    if (!deviceError) return;
+    attributes.setError(deviceError);
+  },[deviceError])
+
   return (
+        <>
         <div className="w-full overflow-x-hidden overflow-y-scroll">
 
           {/* Top Toolbar */}
@@ -46,6 +60,7 @@ const RemoteButtons = () => {
             {/* Info Bar */}
             <InfoBar 
               macAddress={deviceData?.macAddress ? deviceData?.macAddress : "Loading.."} 
+              category={remoteData? remoteData.category: "Loading.."}
               remoteName={remoteName}
               deviceName={deviceData?.deviceName ? deviceData?.deviceName : "Loading.."}
               isConnected={isConnected}
@@ -65,28 +80,27 @@ const RemoteButtons = () => {
                 </div>
               </div>
               <div className="pr-3">
-                <Toolbar onAddButton={remoteRefetch}/>
+                <Toolbar>
+                  <AddButtonModal onAddButton={remoteRefetch}/>
+                </Toolbar>
               </div>
             </div>
-
             {/* Buttons Grid */}
             {remoteData && remoteData?.buttons 
               ?
               <DraggingProvider>
-                <TileGrid>
-                  {/* This is a patch otherwise the component wont rerender when doing refetchRemote */}
-                  {console.log(remoteData)}
-                  {
-                    remoteData.buttons.map((item, index) => 
+                <TileGrid size={remoteData.buttons.length}>
+                  { remoteData.buttons.map((item, index) => 
                       <ButtonTile key={index} id={index} item={item} state={true} remoteName={remoteName} refetch={remoteRefetch}/>
                     )}
-                  {/* <AddBorderButton/> */}
                 </TileGrid> 
               </DraggingProvider>
               :<h1>Loading..</h1>
             }
           </EditModeProvider>
         </div>
+        <ErrorModal {...attributes}/>
+        </>
 );
 };
 

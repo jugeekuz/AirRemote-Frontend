@@ -7,7 +7,7 @@ import config from "../configs/config";
 import { wsHandler } from "../services/websocket";
 
 const RemoteButton = (props) => {
-	const responseTimeout = 15000;	
+	const responseTimeout = 22000;	
 	const successAnimationTimeout = 500;
 	const wsUrl = config.wssUrl;
 	

@@ -9,16 +9,27 @@ module.exports ={
   ],
   theme: {
     screens: {
+      'xs': '480px',
       'sm': '640px',
       'md': '768px',
       'lg': '1024px',
       'xl': '1280px',
-      '3xl': '2048px',
+      '2xl': '1920px',
+      '3xl': '2600px',
     },
     extend: {
       scale: {
         '110': '1.10',
         '105': '1.05',
+      },
+      gridTemplateColumns: {
+        '14': 'repeat(14, minmax(0, 1fr))',
+        '15': 'repeat(15, minmax(0, 1fr))',
+        '16': 'repeat(16, minmax(0, 1fr))',
+        '17': 'repeat(17, minmax(0, 1fr))',
+        '18': 'repeat(18, minmax(0, 1fr))',
+        '19': 'repeat(19, minmax(0, 1fr))',
+        '20': 'repeat(20, minmax(0, 1fr))',
       },
       colors:{
         primary: {
