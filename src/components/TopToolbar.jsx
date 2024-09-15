@@ -1,17 +1,29 @@
-import React from "react";
+import React, {useState} from "react";
 import { ArrowLeft, Settings } from "lucide-react";
 import UserLogo from '../assets/icons/avatar.svg?react';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+
+import logoImg from '../assets/imgs/logo.png'
 
 const TopToolbar = () => {
 	const navigate = useNavigate();
-
+	const location = useLocation();
+	const isNested = location.pathname.split('/').filter(Boolean).length > 1;
+	console.log(location.pathname)
 	return (
 		<div className="flex justify-between items-center h-16 w-full p-3">
-			<div onClick={()=>navigate(-1)} className="flex justify-center items-center w-8 h-8 rounded-md bg-gray-50 cursor-pointer"><ArrowLeft /></div>
+			{ isNested?
+				<div onClick={()=>navigate(-1)} className="flex justify-center items-center w-8 h-8 rounded-md bg-gray-50 cursor-pointer"><ArrowLeft /></div> 
+				:
+				<img
+				src={logoImg}
+				alt="Logo"
+				className="w-9 h-9 "
+				/>
+			}
 			
-			{/* <img src="https://img.logoipsum.com/297.svg" className="w-32"></img> */}
 			<div className="flex items-center">
 				<div className="flex w-8 h-8 items-center justify-center mx-2 rounded-full ">
 					<Settings size={20}/>

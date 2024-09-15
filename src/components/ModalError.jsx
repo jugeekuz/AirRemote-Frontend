@@ -1,7 +1,7 @@
 import React from "react";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
 
-const ErrorModal = ({ isOpen, onOpenChange, error }) => {
+const ModalError = ({ isOpen, onOpenChange, error }) => {
 	
 	return (
 		<Modal isOpen={isOpen} onOpenChange={onOpenChange} placement={"top"}>
@@ -26,4 +26,4 @@ const ErrorModal = ({ isOpen, onOpenChange, error }) => {
 	);
 };
 
-export default ErrorModal;
+export default ModalError;

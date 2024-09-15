@@ -23,7 +23,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 import { DraggingContext } from "../contexts/DraggingContext";
 
-export const TileGrid = (props) => {
+export const TileList = (props) => {
 	const [activeId, setActiveId] = useState(null);
 	const { setDragging } = useContext(DraggingContext);
 	const [childrenOrder, setChildrenOrder] = useState(
@@ -71,14 +71,14 @@ export const TileGrid = (props) => {
 			onDragEnd={handleDragEnd}
 			onDragStart={handleDragStart}
 		>
-			<div className="w-full grid grid-rows-2 grid-cols-2 gap-2 p-1 pr-2
-			xs:grid-cols-3
-			sm:grid-cols-4 
-			md:grid-cols-5
-			lg:grid-cols-7 
-			xl:grid-cols-10 
-			2xl:grid-cols-15
-			3xl:grid-cols-17">
+			<div className="w-full grid grid-rows-2 grid-cols-1 gap-2 p-1 pr-2
+			sm:grid-cols-2
+			md:grid-cols-3
+			lg:grid-cols-4
+			xl:grid-cols-5
+			2xl:grid-cols-6
+			3xl:grid-cols-7
+			">
 				<SortableContext items={childrenOrder.map(id => `${id}`)} strategy={rectSortingStrategy}>
 					{props.size && childrenOrder.map((orderIndex) => props.children[orderIndex])}
 					<DragOverlay>
@@ -89,33 +89,3 @@ export const TileGrid = (props) => {
 		</DndContext>
 	)
 }
-
-// const Tile = (props) => {
-// 	const {
-// 		attributes,
-// 		listeners,
-// 		setNodeRef,
-// 		transform,
-// 		transition,
-// 		isDragging
-// 	} = useSortable({ id: props.id });
-
-	
-// 	const style = {
-// 		transform: CSS.Translate.toString(transform),
-// 		transition,
-// 		zIndex: isDragging ? "100": "auto",
-// 		opacity: isDragging ? 0.3 : 1
-// 	};
-
-// 	return (
-// 		<div 
-// 			ref={setNodeRef} 
-// 			style={style} 
-// 			className="bg-gray-100 rounded-lg border border-gray-300 h-32 p-1" 
-// 			{...listeners} 
-// 			{...attributes} >
-// 				{props.children}
-// 		</div>
-// 	)
-// }

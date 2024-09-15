@@ -20,10 +20,10 @@ import { useParams } from "react-router-dom"
 import useError from "../hooks/useError";
 import useAdd from "../hooks/useAdd";
 
-import ErrorModal from "./ErrorModal";
+import ModalError from "./ModalError";
 import config from "../configs/config";
 
-export const AddRemoteModal = ({deviceData, onAddRemote}) => {
+export const ModalAddRemote = ({deviceData, onAddRemote}) => {
 	const apiUrl = config.apiUrl;
 	const remoteCategories = ["Air Conditioner", "Audio System", "Dehumidifier", "Heater", "RGB Lights", "Smart TV", "Generic Device"];
 
@@ -151,7 +151,7 @@ export const AddRemoteModal = ({deviceData, onAddRemote}) => {
 		)}
 		</ModalContent>
 		</Modal>
-		<ErrorModal {...attributes}/>
+		<ModalError {...attributes}/>
 		</>
 	);
 
@@ -207,4 +207,4 @@ const Step3 = ({isInvalid, remoteName, setRemoteName}) => (
 	</div>
 )
 
-export default AddRemoteModal;
+export default ModalAddRemote;

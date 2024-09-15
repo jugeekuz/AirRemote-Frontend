@@ -17,12 +17,12 @@ import {
 
 import { useParams } from "react-router-dom"
 
-import ErrorModal from "./ErrorModal";
+import ModalError from "./ModalError";
 import useError from "../hooks/useError";
 import {wsHandler} from '../services/websocket'
 import config from "../configs/config";
 
-export const AddButtonModal = ({onAddButton}) => {
+export const ModalAddButton = ({onAddButton}) => {
 	const apiUrl = config.apiUrl;
 	const readTimeout = 30000;
 	const wsUrl = config.wssUrl;
@@ -147,7 +147,7 @@ export const AddButtonModal = ({onAddButton}) => {
 		)}
 		</ModalContent>
 		</Modal>
-		<ErrorModal {...attributes}/>
+		<ModalError {...attributes}/>
 		</>
 	);
 
@@ -223,4 +223,4 @@ const Step5 = () => (
 	</>
 )
 
-export default AddButtonModal;
+export default ModalAddButton;

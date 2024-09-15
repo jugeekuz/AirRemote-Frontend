@@ -12,9 +12,9 @@ import { DraggingContext }  from '../contexts/DraggingContext';
 
 import config from '../configs/config'
 import RemoteButton from "./RemoteButton";
-import DeleteButton from "./DeleteButton";
+import TileDelete from "./TileDelete";
 
-export const ButtonTile = (props) => {
+export const TileRemoteButton = (props) => {
 	const apiUrl = config.apiUrl;
 	const { editMode } = useContext(EditModeContext);
 	const { dragging } = useContext(DraggingContext);
@@ -76,7 +76,7 @@ export const ButtonTile = (props) => {
 
 				</div>
 			</div>
-			{editMode? <DeleteButton url={`${apiUrl}/remotes/${props.remoteName}/buttons/${props.item.buttonName}`} refetch={props.refetch}/>: null}
+			{editMode? <TileDelete url={`${apiUrl}/remotes/${props.remoteName}/buttons/${props.item.buttonName}`} refetch={props.refetch}/>: null}
 			
 		</div>
 		

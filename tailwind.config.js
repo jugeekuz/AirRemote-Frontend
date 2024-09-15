@@ -68,10 +68,22 @@ module.exports ={
             transform: 'rotate(1deg)',
           }
         },
+        shakeSm: {
+          '0%': {
+            transform: 'rotate(0.5deg)',
+          },
+          '50%': {
+            transform: 'rotate(-0.75deg)',
+          },
+          '100%': {
+            transform: 'rotate(0.5deg)',
+          }
+        },
       },
       animation: {
         pop: 'pop 0.6s ease-in-out infinite',
         shake: 'shake 0.2s infinite ease-in-out',
+        shakeSm: 'shakeSm 0.2s infinite ease-in-out',
       },
     },
   },

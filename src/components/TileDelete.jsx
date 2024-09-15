@@ -6,8 +6,8 @@ import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDis
 import useDelete from '../hooks/useDelete';
 import useError from '../hooks/useError';
 
-import ErrorModal from './ErrorModal';
-const DeleteButton = ({url, refetch, position}) => {
+import ModalError from './ModalError';
+const TileDelete = ({url, refetch, position}) => {
 	const { remoteName } = useParams();
 	const attributes = useError("");
 
@@ -53,9 +53,9 @@ const DeleteButton = ({url, refetch, position}) => {
 				<X color={"#000000"} size={14} strokeWidth={"2.5px"} />
 			</div>
 		</div>
-		<ErrorModal {...attributes}/>
+		<ModalError {...attributes}/>
 		</>
 	);
 };
 
-export default DeleteButton;
+export default TileDelete;

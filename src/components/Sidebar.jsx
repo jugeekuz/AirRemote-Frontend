@@ -6,7 +6,7 @@ export const Sidebar = (props) => {
 	const [expanded, setExpanded] = useState(false);
 
 	return (
-		<div className="w-16 mr-3">
+		<div className="w-16 mr-3 z-10">
 			<aside className={`absolute h-screen ${expanded ? "w-64" : "w-16"}`}>
 				<nav className="h-full flex flex-col bg-white border-r shadow-sm">
 					<div className="p-4 pb-2 flex justify-between items-center">
@@ -55,7 +55,7 @@ export const SidebarItem = (props) => {
 	return (
 		<Link to={props.to}>
 			<li className={`
-				relative flex justify-center items-center py-2 px-2 my-1
+				relative z-10 flex justify-center items-center py-2 px-2 my-1
 				font-medium rounded-md cursor-pointer
 				transition-colors ${
 					isActive
@@ -67,14 +67,14 @@ export const SidebarItem = (props) => {
 				<span className={`overflow-hidden ${expanded? `w-52 ml-3` : `w-0`} font-sans`}>{props.text}</span>
 				{props.alert && <div className={`absolute right-2 w-2 h-2 rounded bg-green-400 ${expanded ? "" : "top-2"}`}></div>}
 				
-				{!expanded && 
+				{/* {!expanded && 
 				<div className={`
 					absolute left-full rounded-md 
 					px-2 py-1 ml-6
 					bg-green-100 text-gray-900 text-sm
 					invisible -translate-x-3 transition-all
 					group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
-					`}>{props.text}</div>}
+					`}>{props.text}</div>} */}
 			</li>
 		</Link>
 	)

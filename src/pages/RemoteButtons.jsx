@@ -13,10 +13,10 @@ import { DraggingProvider } from "../contexts/DraggingContext";
 import TopToolbar from '../components/TopToolbar';
 import InfoBar from '../components/InfoBar';
 import Toolbar from "../components/Toolbar";
-import AddButtonModal from "../components/AddButtonModal";
+import ModalAddButton from "../components/ModalAddButton";
 import { TileGrid } from '../components/TileGrid';
-import { ButtonTile } from '../components/ButtonTile';
-import ErrorModal from "../components/ErrorModal";
+import { TileRemoteButton } from '../components/TileRemoteButton';
+import ModalError from "../components/ModalError";
 const RemoteButtons = () => {
 	const apiUrl = config.apiUrl;
 	const { remoteName } = useParams();
@@ -81,25 +81,25 @@ const RemoteButtons = () => {
               </div>
               <div className="pr-3">
                 <Toolbar>
-                  <AddButtonModal onAddButton={remoteRefetch}/>
+                  <ModalAddButton onAddButton={remoteRefetch}/>
                 </Toolbar>
               </div>
             </div>
             {/* Buttons Grid */}
-            {remoteData && remoteData?.buttons 
+            {remoteData && remoteData?.buttons.length !== 0
               ?
               <DraggingProvider>
                 <TileGrid size={remoteData.buttons.length}>
                   { remoteData.buttons.map((item, index) => 
-                      <ButtonTile key={index} id={index} item={item} state={true} remoteName={remoteName} refetch={remoteRefetch}/>
+                      <TileRemoteButton key={index} id={index} item={item} state={true} remoteName={remoteName} refetch={remoteRefetch}/>
                     )}
                 </TileGrid> 
               </DraggingProvider>
-              :<h1>Loading..</h1>
+              : null
             }
           </EditModeProvider>
         </div>
-        <ErrorModal {...attributes}/>
+        <ModalError {...attributes}/>
         </>
 );
 };

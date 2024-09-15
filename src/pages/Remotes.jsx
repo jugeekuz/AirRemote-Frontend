@@ -10,11 +10,12 @@ import { DraggingProvider } from "../contexts/DraggingContext";
 
 import Toolbar from "../components/Toolbar";
 import TopToolbar from "../components/TopToolbar";
-import ErrorModal from "../components/ErrorModal";
-import AddRemoteModal from "../components/AddRemoteModal";
+import ModalError from "../components/ModalError";
+import ModalAddRemote from "../components/ModalAddRemote";
 
 import { TileGrid } from "../components/TileGrid";
-import { RemoteTile } from "../components/RemoteTile";
+import { TileRemote } from "../components/TileRemote";
+import NoticeBox from "../components/NoticeBox";
 const Remotes = () => {
   const apiUrl = config.apiUrl;
   
@@ -36,13 +37,13 @@ const Remotes = () => {
   return (<>
     <div className="w-full overflow-x-hidden overflow-y-scroll">
     <TopToolbar/>
-      <div className=" p-1">
+      {/* <div className=" p-1">
         <div className={`flex justify-center align-center flex-col w-full bg-gray-950 rounded-md p-4 shadow-2xl 
           h-40
           xl:h-60
           `}>
 			  </div>
-      </div>
+      </div> */}
     <EditModeProvider>
       
     <div className="flex justify-between items-center flex-row mt-6 mb-3 ml-2">
@@ -60,10 +61,13 @@ const Remotes = () => {
 
       <div className="pr-3">
         <Toolbar>
-          <AddRemoteModal deviceData={deviceData} onAddRemote={refetch}/>
+          <ModalAddRemote deviceData={deviceData} onAddRemote={refetch}/>
         </Toolbar>
       </div>
     </div>
+    <NoticeBox>
+      If the device loses connection it will take up to 10 minutes to show up as disconnected.
+    </NoticeBox>
     
     {data ? 
       <DraggingProvider>
@@ -72,7 +76,7 @@ const Remotes = () => {
           data.map((item, index) => {
             const device = deviceData ? deviceData.find((dev) => dev.macAddress == item.macAddress) : null
             const isConnected = device ? (device.connectionId != null) : false
-            return <RemoteTile isConnected={isConnected} key={index} id={index} item={item} refetch={refetch}></RemoteTile>
+            return <TileRemote isConnected={isConnected} key={index} id={index} item={item} refetch={refetch}></TileRemote>
           })
         }
       </TileGrid>
@@ -81,7 +85,7 @@ const Remotes = () => {
     }
     </EditModeProvider>
     </div>
-    <ErrorModal {...attributes}/>
+    <ModalError {...attributes}/>
     </>);
 };
 
