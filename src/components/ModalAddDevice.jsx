@@ -15,7 +15,7 @@ import {
 import { useParams } from "react-router-dom"
 
 import useError from "../hooks/useError";
-import useAdd from "../hooks/useAdd";
+import usePost from "../hooks/usePost";
 
 import ModalError from "./ModalError";
 import config from "../configs/config";

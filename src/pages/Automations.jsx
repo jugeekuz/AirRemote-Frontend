@@ -1,6 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
+import config from "../configs/config";
 
 import useError from "../hooks/useError";
+import useFetchMemo from "../hooks/useFetchMemo";
 
 import { EditModeProvider } from "../contexts/EditModeContext";
 import { DraggingProvider } from "../contexts/DraggingContext";
@@ -13,19 +15,32 @@ import ModalAddAutomation from "../components/ModalAddAutomation";
 import { TileList } from "../components/TileList";
 import { TileAutomation } from "../components/TileAutomation";
 const Automations = () => {
+	const apiUrl = config.apiUrl;
 	const attributes = useError("");
+
+	const { data, loading, error, refetch } = useFetchMemo(`${apiUrl}/automations`);
+
+	useEffect(() => {
+		if (!error) return;
+		attributes.setError(error);
+	},[error])
+	
+	// This is a workaround to rerender this component
+	// If this component is only dependent on `data`, then because of shallow comparison it won't rerender
+	const Grid = ({length, data}) => (
+		<DraggingProvider>
+			<TileList size={length}>
+				{ 
+				data.map((item, index) => <TileAutomation key={index} id={index} item={item} refetch={refetch}/>)
+				}
+			</TileList>
+		</DraggingProvider> 
+	)
 
 	return (
 		<>
 		<div className="w-full overflow-x-hidden overflow-y-scroll">
 		<TopToolbar/>
-				{/* <div className=" p-1">
-					<div className={`flex justify-center align-center flex-col w-full bg-gray-950 rounded-md p-4 shadow-2xl 
-						h-40
-						xl:h-60
-						`}>
-					</div>
-				</div> */}
 		<EditModeProvider>
 		
 
@@ -37,14 +52,13 @@ const Automations = () => {
 					</span>
 					<div className="flex justify-center items-center ml-2 rounded-lg w-6 h-6 bg-green-600">
 						<span className="font-sans text-center text-white text-xs" >
-						 
-							8
+						 {data ? data.length : 0}
 						</span>
 					</div>
 				</div>
 				<div className="flex items-center justify-center pr-3">
 					<Toolbar>
-						<ModalAddAutomation/>
+						<ModalAddAutomation onAddAutomation={refetch} />
 					</Toolbar>
 				</div>
 			</div>
@@ -52,23 +66,17 @@ const Automations = () => {
 				If the device loses connection it will take up to 10 minutes to show up as disconnected.
 			</NoticeBox>
 			
-			<DraggingProvider>
-				<TileList size={8}>
-					<TileAutomation id={0} key={0}/>
-					<TileAutomation id={1} key={1}/>
-					<TileAutomation id={2} key={2}/>
-					<TileAutomation id={3} key={3}/>
-					<TileAutomation id={4} key={4}/>
-					<TileAutomation id={5} key={5}/>
-					<TileAutomation id={6} key={6}/>
-					<TileAutomation id={7} key={7}/>
-				</TileList> 
-			</DraggingProvider>
+			{data && data?.length > 0 ? 
+				<Grid length={data.length} data={data}/>
+			: null
+			}
 		</EditModeProvider>
 	</div>
 	<ModalError {...attributes}/>
 	</>
 	);
 };
+
+
 
 export default Automations;

@@ -18,7 +18,7 @@ import {
 import { useParams } from "react-router-dom"
 
 import useError from "../hooks/useError";
-import useAdd from "../hooks/useAdd";
+import usePost from "../hooks/usePost";
 
 import ModalError from "./ModalError";
 import config from "../configs/config";
@@ -27,7 +27,7 @@ export const ModalAddRemote = ({deviceData, onAddRemote}) => {
 	const apiUrl = config.apiUrl;
 	const remoteCategories = ["Air Conditioner", "Audio System", "Dehumidifier", "Heater", "RGB Lights", "Smart TV", "Generic Device"];
 
-	const { addItem, success: remoteAddSuccess, error: remoteAddError, data: remoteAddResponse } = useAdd(`${apiUrl}/remotes`);
+	const { postItem, success: remoteAddSuccess, error: remoteAddError, data: remoteAddResponse } = usePost(`${apiUrl}/remotes`);
 
 	const devicesList = useRef([]);
 	const [modalState, setModalState] = useState(1);
@@ -39,7 +39,6 @@ export const ModalAddRemote = ({deviceData, onAddRemote}) => {
 	
 	const attributes = useError("");
 	const {error, setError} = attributes;
-	const timeoutRef = useRef(null);
 	
 	const isInvalid = useMemo(() => {
 		if (remoteName === "") return false; 
@@ -110,7 +109,7 @@ export const ModalAddRemote = ({deviceData, onAddRemote}) => {
 			"macAddress": macAddress,
 			"buttons": []
 		}
-		addItem(payload);
+		postItem(payload);
 	}
 
 	return (

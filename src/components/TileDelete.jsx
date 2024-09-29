@@ -33,7 +33,7 @@ const TileDelete = ({url, refetch, position}) => {
 				<ModalHeader className="flex flex-col gap-1 mt-2">Confirmation</ModalHeader>
 				<ModalBody>
 					<p> 
-						Are you sure you want to delete this button?
+						Are you sure you want to delete this item?
 					</p>
 				</ModalBody>
 				<ModalFooter>

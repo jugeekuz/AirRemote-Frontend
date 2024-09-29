@@ -8,6 +8,9 @@ import { Grip } from "lucide-react";
 import { CSS } from '@dnd-kit/utilities';
 import { Switch } from "@nextui-org/react";
 
+import usePost from "../hooks/usePost"
+import useError from '../hooks/useError';
+
 import { EditModeContext } from '../contexts/EditModeContext';
 import { DraggingContext }  from '../contexts/DraggingContext';
 
@@ -15,13 +18,16 @@ import TileDelete from "./TileDelete";
 
 import config from '../configs/config';
 
-import { ChevronRight } from "lucide-react";
-export const TileAutomation = ({id}) => {
+export const TileAutomation = ({id, item, refetch}) => {
 	const apiUrl = config.apiUrl;
+
+	const [isEnabled, setIsEnabled] = useState(item?.automationState === "ENABLED")
+	const { postItem, success, error, data } = usePost(`${apiUrl}/automations/${item?.automationId}/state`);
+
+	const errorAttributes = useError("");
+
 	const { editMode } = useContext(EditModeContext);
 	const { dragging } = useContext(DraggingContext);
-	const navigate = useNavigate();
-	const location = useLocation();
 
 	const {
 		attributes,
@@ -45,6 +51,19 @@ export const TileAutomation = ({id}) => {
 	  };
 
 	const listenersOnState = editMode ? { ...listeners } : {};
+	
+	const toggleAutomation = () => {
+		const payload = {"state": isEnabled ? "DISABLED": "ENABLED"};
+		postItem(payload);
+		setIsEnabled(!isEnabled);
+
+	}
+
+	useEffect(() => {
+		if (!error) return;
+		errorAttributes.setError(error);
+	  },[error])
+	
 
 	return (
 		<>
@@ -64,23 +83,23 @@ export const TileAutomation = ({id}) => {
 					</div> 
                 </div>
 
-				<div className="flex flex-col h-full min-w-1/2 justify-center items-start">
+				<div className="flex flex-col h-full min-w-1/2 justify-center items-start ml-1">
                     <div className="flex w-full">
-                        <span className="text-sm font-semibold text-gray-800 text-left">Close AirConditioner morning</span>
+                        <span className="text-sm font-semibold text-gray-800 text-left">{item?.automationName}</span>
                     </div>
                     
                     <div className="flex w-full">
-                        <span className="text-xs font- font-normal text-gray-500">12-20 Aug - 06:00 AM</span>
+                        <span className="text-xs font- font-normal text-gray-500">Mon, Tue-Wed, Sun - 06:00 AM</span>
                     </div>
                 </div>
 
 				<div className="flex flex-row h-full  justify-end ml-1">
-                    <Switch defaultSelected size="sm" aria-label="Automatic updates" color="success"/>
+                    <Switch isSelected={isEnabled} onValueChange={toggleAutomation} size="sm" aria-label="Automatic updates" color="success"/>
                 </div>
 				
 				
 			</div>
-			{editMode? <TileDelete url={`${apiUrl}/devices/45435`} refetch={() => {return;}} position={"left"}/>: null}
+			{editMode? <TileDelete url={`${apiUrl}/automations/${item?.automationId}`} refetch={() => refetch()} position={"left"}/>: null}
 			
 		</div>
 		

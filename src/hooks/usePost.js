@@ -1,11 +1,11 @@
 import { useState, useRef } from 'react';
 
-const useAdd = (url) => {
+const usePost = (url) => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
 
-  const addItem = async (item) => {
+  const postItem = async (item) => {
     
     try {
       const response = await fetch(url, {
@@ -22,6 +22,7 @@ const useAdd = (url) => {
       }
       setSuccess(true);
       const result = await response.json();
+      console.log(result)
       setData(result);
       return result;
     } catch (e) {
@@ -32,7 +33,7 @@ const useAdd = (url) => {
     }
   };
 
-  return { addItem, success, error, data };
+  return { postItem, success, error, data };
 };
 
-export default useAdd;
+export default usePost;

@@ -18,6 +18,9 @@ module.exports ={
       '3xl': '2600px',
     },
     extend: {
+      fontFamily: {
+        roboto: ['Roboto', 'sans-serif'],
+      },
       scale: {
         '110': '1.10',
         '105': '1.05',

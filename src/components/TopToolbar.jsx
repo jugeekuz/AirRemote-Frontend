@@ -11,7 +11,6 @@ const TopToolbar = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const isNested = location.pathname.split('/').filter(Boolean).length > 1;
-	console.log(location.pathname)
 	return (
 		<div className="flex justify-between items-center h-16 w-full p-3">
 			{ isNested?
