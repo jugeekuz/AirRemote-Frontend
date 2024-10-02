@@ -169,4 +169,4 @@ export const TileAutomation = ({id, item, refetch}) => {
 		);
 };
 
-
+export default TileAutomation;

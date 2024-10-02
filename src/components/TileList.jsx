@@ -89,3 +89,4 @@ export const TileList = (props) => {
 		</DndContext>
 	)
 }
+export default TileList;

@@ -110,4 +110,4 @@ export const TileDevice = ({id, item, isConnected, refetch}) => {
 		);
 };
 
-
+export default TileDevice;

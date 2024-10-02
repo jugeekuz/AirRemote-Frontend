@@ -20,6 +20,9 @@ module.exports ={
     extend: {
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
+        fredoka: ['Fredoka', 'sans-serif'],
+        playfair: ['Playfair Display', 'serif'],
       },
       scale: {
         '110': '1.10',
@@ -45,9 +48,6 @@ module.exports ={
           DEFAULT: '#343434',
           dark: '#343434',
         },
-      },
-      fontFamily: {
-        sans: ['Roboto', 'sans-serif'],
       },
       height: {
         '100dvh': '100dvh'

@@ -159,7 +159,7 @@ export const TileRemote = ({id, item, isConnected, refetch}) => {
 					
 					<div className="flex h-full justify-end items-end">
 						<div className="flex flex-row justify-center items-center cursor-pointer rounded-full w-14 h-14 bg-gray-200 shadow-md shadow-gray-700 border-gray-300 border-1  bg-opacity-70 backdrop-filter backdrop-blur-2xl mr-2 mb-2">
-							<ChevronRight onClick={() => navigate(`${location.pathname}/${item.remoteName}`)} className="opacity-95" color={"#374151"} size={28}/>
+							<ChevronRight onClick={() => navigate(`/remotes/${item.remoteName}`)} className="opacity-95" color={"#374151"} size={28}/>
 						</div>
 					</div>
 				</div>
@@ -174,3 +174,4 @@ export const TileRemote = ({id, item, isConnected, refetch}) => {
 };
 
 
+export default TileRemote;
