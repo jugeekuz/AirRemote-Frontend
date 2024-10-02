@@ -23,6 +23,7 @@ export const TileAutomation = ({id, item, refetch}) => {
 
 	const [isEnabled, setIsEnabled] = useState(item?.automationState === "ENABLED")
 	const { postItem, success, error, data } = usePost(`${apiUrl}/automations/${item?.automationId}/state`);
+	const [date, setDate] = useState("--:--")
 
 	const errorAttributes = useError("");
 
@@ -64,7 +65,68 @@ export const TileAutomation = ({id, item, refetch}) => {
 		errorAttributes.setError(error);
 	  },[error])
 	
+	// Convert date from utc to local
+	useEffect(() => {
+		if (!item?.automationHour || !item?.automationMinutes || !item?.automationDays) return;
+		const utcDate = new Date();
+		utcDate.setUTCHours(item.automationHour);
+    	utcDate.setUTCMinutes(item.automationMinutes);
+		utcDate.setUTCDate(2);
+		
+		const localHour = utcDate.getHours();
+    	const localMinutes = utcDate.getMinutes();
 
+		// Time difference might shift the day back or forward
+		const dayDifference = utcDate.getDate() - utcDate.getUTCDate() ;
+		console.log(`dayDifference : ${dayDifference}`);
+		console.log(`item.automationDays : ${item.automationDays}`);
+		// Shift days one back to have Sunday be last day
+		const weekOrder = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+		let daysExploded = item.automationDays.split(/[, -]/);
+		daysExploded = daysExploded
+			.map(day => parseInt(day))
+			.map(day => (day - 1 + dayDifference)%7 + 1)
+			.map(day => day == 1 ? 7 : (day-1))
+			.sort((a, b) => a - b)
+		console.log(`Days exploded : ${daysExploded}`)
+		const days = daysExploded.map(day => weekOrder[day-1])
+		
+		// Make consecutive days appear with a dash in between ex Mon,Tue,Wed -> Mon-Wed
+		let result = [];
+    
+		// Initialize a temporary array to group consecutive days
+		let tempGroup = [days[0]];
+		
+		// Iterate through the days array and group consecutive days
+		for (let i = 1; i < days.length; i++) {
+			// Check if the current day is consecutive to the previous one
+			if (weekOrder.indexOf(days[i]) === weekOrder.indexOf(days[i-1]) + 1) {
+				tempGroup.push(days[i]);
+			} else {
+				// If not consecutive, finalize the current group and start a new one
+				if (tempGroup.length > 1) {
+					result.push(`${tempGroup[0]}-${tempGroup[tempGroup.length - 1]}`);
+				} else {
+					result.push(tempGroup[0]);
+				}
+				tempGroup = [days[i]];
+			}
+		}
+		
+		// Add the last group to the result
+		if (tempGroup.length > 1) {
+			result.push(`${tempGroup[0]}-${tempGroup[tempGroup.length - 1]}`);
+		} else {
+			result.push(tempGroup[0]);
+		}
+		
+		const AM = localHour < 12
+
+		// Join all groups with commas and return the result
+		setDate(`${result.join(", ")} - ${(AM ? localHour : localHour-12).toString().padStart(2, '0')}:${localMinutes.toString().padStart(2, '0')} ${AM ? "AM" : "PM"}`);
+
+
+	}, [item])
 	return (
 		<>
 		<div 
@@ -89,7 +151,7 @@ export const TileAutomation = ({id, item, refetch}) => {
                     </div>
                     
                     <div className="flex w-full">
-                        <span className="text-xs font- font-normal text-gray-500">Mon, Tue-Wed, Sun - 06:00 AM</span>
+                        <span className="text-xs font- font-normal text-gray-500">{date}</span>
                     </div>
                 </div>
 

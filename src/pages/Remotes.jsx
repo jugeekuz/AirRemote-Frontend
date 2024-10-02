@@ -34,16 +34,24 @@ const Remotes = () => {
     attributes.setError(deviceError);
   },[deviceError])
 
-  return (<>
+  const Grid = ({ data, length, deviceData }) => (
+    <DraggingProvider>
+      <TileGrid size={length}>
+        { 
+          data.map((item, index) => {
+            const device = deviceData ? deviceData.find((dev) => dev.macAddress == item.macAddress) : null
+            const isConnected = device ? (device.connectionId != null) : false
+            return <TileRemote isConnected={isConnected} key={index} id={index} item={item} refetch={refetch}></TileRemote>
+          })
+        }
+      </TileGrid>
+      </DraggingProvider> 
+  )
+
+  return (
+    <>
     <div className="w-full overflow-x-hidden overflow-y-scroll">
     <TopToolbar/>
-      {/* <div className=" p-1">
-        <div className={`flex justify-center align-center flex-col w-full bg-gray-950 rounded-md p-4 shadow-2xl 
-          h-40
-          xl:h-60
-          `}>
-			  </div>
-      </div> */}
     <EditModeProvider>
       
     <div className="flex justify-between items-center flex-row mt-6 mb-3 ml-2">
@@ -70,17 +78,8 @@ const Remotes = () => {
     </NoticeBox>
     
     {data ? 
-      <DraggingProvider>
-      <TileGrid size={data.length}>
-        { 
-          data.map((item, index) => {
-            const device = deviceData ? deviceData.find((dev) => dev.macAddress == item.macAddress) : null
-            const isConnected = device ? (device.connectionId != null) : false
-            return <TileRemote isConnected={isConnected} key={index} id={index} item={item} refetch={refetch}></TileRemote>
-          })
-        }
-      </TileGrid>
-      </DraggingProvider> 
+      
+      <Grid data={data} deviceData={deviceData} length={data.length}/>
       : null
     }
     </EditModeProvider>

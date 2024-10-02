@@ -27,16 +27,22 @@ const Devices = () => {
     attributes.setError(deviceError);
   },[deviceError])
 
+  const Grid = ({ length, deviceData }) => (
+    <DraggingProvider>
+      <TileGrid size={length}>
+        { 
+          deviceData.map((device, index) => {
+            const isConnected = device ? (device.connectionId != null) : false
+            return <TileDevice isConnected={isConnected} key={index} id={index} item={device} refetch={deviceRefetch}/>
+          })
+        }
+      </TileGrid>
+    </DraggingProvider> 
+  )
+
   return (<>
     <div className="w-full overflow-x-hidden overflow-y-scroll">
       <TopToolbar/>
-        {/* <div className=" p-1">
-          <div className={`flex justify-center align-center flex-col w-full bg-gray-950 rounded-md p-4 shadow-2xl 
-            h-40
-            xl:h-60
-            `}>
-          </div>
-        </div> */}
       <EditModeProvider>
         
       <div className="flex justify-between items-center flex-row mt-6 mb-3 ml-2">
@@ -63,16 +69,7 @@ const Devices = () => {
         If the device loses connection it will take up to 10 minutes to show up as disconnected.
       </NoticeBox>
       {deviceData ? 
-        <DraggingProvider>
-        <TileGrid size={deviceData.length}>
-          { 
-            deviceData.map((device, index) => {
-              const isConnected = device ? (device.connectionId != null) : false
-              return <TileDevice isConnected={isConnected} key={index} id={index} item={device} refetch={deviceRefetch}/>
-            })
-          }
-        </TileGrid>
-        </DraggingProvider> 
+        <Grid length={deviceData.length} deviceData={deviceData}/>
         : null
       }
       </EditModeProvider>

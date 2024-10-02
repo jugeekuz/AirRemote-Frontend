@@ -86,10 +86,15 @@ export const ModalAddAutomation = ({onAddAutomation}) => {
 	const createAutomation = () => {
 		if (modalState !== 4) return;
 
+		const cronArgs = cronJob.split(" ")
+
 		const payload = {
 			"cronExpression": `cron(${cronJob})`,
 			"automationName": automationName,
-			"buttonsList": buttonsSelected
+			"buttonsList": buttonsSelected,
+			"automationMinutes": cronArgs[0],
+			"automationHour": cronArgs[1],
+			"automationDays": cronArgs[4]
 		}
 		postItem(payload)
 		.then(() => {
@@ -206,7 +211,7 @@ const ButtonSelectionStep = ({remoteData, buttonsSelected, setButtonsSelected}) 
 		return <Select
 			label="Remote Name"
 			placeholder="Select remote"
-			className="max-w-xs mt-2"
+			className="w-full mt-2"
 			selectionMode="single"
 			onChange={callback}
 			remotes={filteredRemotes.length}
@@ -226,7 +231,7 @@ const ButtonSelectionStep = ({remoteData, buttonsSelected, setButtonsSelected}) 
 		<Select
 		label="Button Name"
 		placeholder="Select button"
-		className="max-w-xs mt-2"
+		className="w-full mt-2"
 		selectionMode="single"
 		onChange={callback}
 	>	
@@ -309,6 +314,7 @@ const ScheduleSelectionStep = ({setCronJob}) => {
 			.map(
 				day => (parseInt(day)+1)%7 + 1
 			)
+			.sort((a, b) => a - b)
 			.join(',');
 		} else if (utcTime.getTimezoneOffset() < 0 && timeDiff > 0) {
 			cronDays = days.map(
@@ -317,6 +323,7 @@ const ScheduleSelectionStep = ({setCronJob}) => {
 			.map(
 				day => ((day == 1) ? 7 : (day-1))
 			)
+			.sort((a, b) => a - b)
 			.join(',');
 
 		} else {

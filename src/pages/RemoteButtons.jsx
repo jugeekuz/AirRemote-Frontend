@@ -49,6 +49,16 @@ const RemoteButtons = () => {
     attributes.setError(deviceError);
   },[deviceError])
 
+  const Grid = ({ length, buttons, remoteName }) => (
+    <DraggingProvider>
+      <TileGrid size={length}>
+        { buttons.map((item, index) => 
+            <TileRemoteButton key={index} id={index} item={item} state={true} remoteName={remoteName} refetch={remoteRefetch}/>
+          )}
+      </TileGrid> 
+    </DraggingProvider>
+  )
+
   return (
         <>
         <div className="w-full overflow-x-hidden overflow-y-scroll">
@@ -88,13 +98,7 @@ const RemoteButtons = () => {
             {/* Buttons Grid */}
             {remoteData && remoteData?.buttons.length !== 0
               ?
-              <DraggingProvider>
-                <TileGrid size={remoteData.buttons.length}>
-                  { remoteData.buttons.map((item, index) => 
-                      <TileRemoteButton key={index} id={index} item={item} state={true} remoteName={remoteName} refetch={remoteRefetch}/>
-                    )}
-                </TileGrid> 
-              </DraggingProvider>
+                <Grid length={remoteData.buttons.length} buttons={remoteData.buttons} remoteName={remoteName}/>
               : null
             }
           </EditModeProvider>
