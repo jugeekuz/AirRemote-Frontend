@@ -26,7 +26,7 @@ const Automations = () => {
 	},[error])
 	
 	// This is a workaround to rerender this component
-	// If this component is only dependent on `data`, then because of shallow comparison it won't rerender
+	// If this component is only dependent on `data`, then because of shallow comparison it won't rerenderW
 	const Grid = ({length, data}) => (
 		<DraggingProvider>
 			<TileList size={length}>

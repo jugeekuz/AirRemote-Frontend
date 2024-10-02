@@ -61,7 +61,7 @@ export const TileRemote = ({id, item, isConnected, refetch}) => {
 	const RgbImg = () => <div 
 							className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0"
 							style={{ backgroundImage: `url(${rgbStripImg})`,
-									backgroundSize: '90%',
+									backgroundSize: '91%',
 									backgroundPosition: 'bottom left'}}
 						></div>
 

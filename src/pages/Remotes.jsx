@@ -47,7 +47,12 @@ const Remotes = () => {
       </TileGrid>
       </DraggingProvider> 
   )
-
+  const RgbImg = () => <div 
+							className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0"
+							style={{ backgroundImage: `url(${rgbStripImg})`,
+									backgroundSize: '91%',
+									backgroundPosition: 'bottom left'}}
+						></div>
   return (
     <>
     <div className="w-full overflow-x-hidden overflow-y-scroll">
