@@ -29,6 +29,7 @@ export const ModalAddButton = ({onAddButton}) => {
 
 	const [modalState, setModalState] = useState(1);
 	const [buttonName, setButtonName] = useState("");	
+	const [buttonState, setButtonState] = useState("NO");
 
 	const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
 	
@@ -76,7 +77,8 @@ export const ModalAddButton = ({onAddButton}) => {
 			"action": "cmd",
 			"cmd": "read",
 			"remoteName": remoteName,
-			"buttonName": buttonName.trim()
+			"buttonName": buttonName.trim(),
+			"buttonState": buttonState
 		}
 
 		wsHandler(wsUrl, ws_payload, readTimeout, successResponseFormat, setStatus, setError);
@@ -98,7 +100,10 @@ export const ModalAddButton = ({onAddButton}) => {
 
 	// Steps of add new button modal
 	const stepsMapping = {
-		1: <Step1 callback={(e) => setModalState(parseInt(e.target.value))}/>,
+		1: <Step1 callback={(e) => {
+			setButtonState(e.target.value)
+			e.target.value === "YES" ?	setModalState(2) : setModalState(3)
+		}}/>,
 		2: <Step2/>,
 		3: <Step3 buttonName={buttonName} isInvalid={isInvalid} setButtonName={setButtonName}/>,
 		4: <Step4/>,
@@ -161,10 +166,10 @@ const Step1 = ({callback}) => (
 			className="max-w-xs" 
 			onChange={callback}
 		>
-			<SelectItem key="2">
+			<SelectItem key="YES">
 				Yes
 			</SelectItem>
-			<SelectItem key="3">
+			<SelectItem key="NO">
 				No
 			</SelectItem>
 		</Select>

@@ -53,7 +53,7 @@ const RemoteButtons = () => {
     <DraggingProvider>
       <TileGrid size={length}>
         { buttons.map((item, index) => 
-            <TileRemoteButton key={index} id={index} item={item} state={true} remoteName={remoteName} refetch={remoteRefetch}/>
+            <TileRemoteButton key={index} id={index} item={item} state={item?.buttonState === "YES"} remoteName={remoteName} refetch={remoteRefetch}/>
           )}
       </TileGrid> 
     </DraggingProvider>
