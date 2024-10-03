@@ -51,7 +51,7 @@ const RemoteButton = (props) => {
 			case 'loading':
 				return <Spinner size="md" color="default" />;
 			case 'success':				
-				return <CheckBoxAnimation durationSeconds={0.6}/>;
+				return <CheckBoxAnimation durationSeconds={0.8}/>;
 			default:
 				return <Power onClick={handlePress} color={"#22c55e"} size={17} strokeWidth={"2.5px"} />;
 		}
@@ -113,21 +113,28 @@ const CheckBoxAnimation = ({durationSeconds}) => (
 
       <style jsx>{`
         .path {
-          stroke-dasharray: 1000;
-          stroke-dashoffset: 0;  
+          	stroke-dasharray: 1000;
+			stroke-dashoffset: 1000;
         }
         .check {
-          stroke-dashoffset: -100;
-          animation: dash-check ${durationSeconds}s 0.35s ease-in-out forwards; 
+          	animation: dash-check ${durationSeconds}s ease-in-out forwards; 
         }
         
         @keyframes dash-check {
-          0% {
-            stroke-dashoffset: -100;
-          }
-          100% {
-            stroke-dashoffset: 900;
-          }
+			0% {
+				stroke-dashoffset: 1000;
+			}
+			100% {
+				stroke-dashoffset: 0;
+			}
+        }
+		@-webkit-keyframes dash-check {
+			0% {
+				stroke-dashoffset: 1000;
+			}
+			100% {
+				stroke-dashoffset: 0;
+			}
         }
       `}</style>
     </div>
