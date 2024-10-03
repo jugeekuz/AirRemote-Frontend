@@ -8,7 +8,7 @@ import { wsHandler } from "../services/websocket";
 
 const RemoteButton = (props) => {
 	const responseTimeout = 22000;	
-	const successAnimationTimeout = 500;
+	const successAnimationTimeout = 800;
 	const wsUrl = config.wssUrl;
 	
 	const ws_payload = { 
@@ -41,14 +41,17 @@ const RemoteButton = (props) => {
 		}
 	}, [loadingState, onOpen]);
 
+	useEffect(() => {
+		if (loadingState !== 'success') return;
+		setTimeout(() => setLoadingState('idle'), successAnimationTimeout);
+	},[loadingState])
+
 	const renderButton = () => {
 		switch (loadingState) {
 			case 'loading':
 				return <Spinner size="md" color="default" />;
-			case 'success':
-				// Render animation and then go back to idle
-				setTimeout(() => setLoadingState('idle'), successAnimationTimeout);
-				return <Check color={"#22c55e"} size={20} strokeWidth={"3px"} />;
+			case 'success':				
+				return <CheckBoxAnimation durationSeconds={0.6}/>;
 			default:
 				return <Power onClick={handlePress} color={"#22c55e"} size={17} strokeWidth={"2.5px"} />;
 		}
@@ -93,5 +96,41 @@ const RemoteButton = (props) => {
 		</>
 	);
 };
+
+const CheckBoxAnimation = ({durationSeconds}) => (
+	<div className="flex justify-center items-center">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2" className="w-7 h-7"> {/* Tailwind class for width */}
+        <polyline
+          className="path check"
+          fill="none"
+          stroke="#22c55e"
+          strokeWidth="9"
+          strokeLinecap="round"
+          strokeMiterlimit="10"
+          points="100.2,40.2 51.5,88.8 29.8,67.5"
+        />
+      </svg>
+
+      <style jsx>{`
+        .path {
+          stroke-dasharray: 1000;
+          stroke-dashoffset: 0;  
+        }
+        .check {
+          stroke-dashoffset: -100;
+          animation: dash-check ${durationSeconds}s 0.35s ease-in-out forwards; 
+        }
+        
+        @keyframes dash-check {
+          0% {
+            stroke-dashoffset: -100;
+          }
+          100% {
+            stroke-dashoffset: 900;
+          }
+        }
+      `}</style>
+    </div>
+)
 
 export default RemoteButton;

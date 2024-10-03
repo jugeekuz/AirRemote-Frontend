@@ -56,8 +56,8 @@ module.exports ={
         pop: {
           '0%': { transform: 'scale(1)' },
           '30%': { transform: 'scale(1.2)' },
-          '50%': { transform: 'scale(0.9)' },
-          '70%': { transform: 'scale(1.1)' },
+          '50%': { transform: 'scale(1.1)' },
+          '65%': { transform: 'scale(1.2)' },
           '100%': { transform: 'scale(1)' },
         },
         shake: {
@@ -84,7 +84,7 @@ module.exports ={
         },
       },
       animation: {
-        pop: 'pop 0.6s ease-in-out infinite',
+        pop: 'pop 0.9s ease-in-out infinite',
         shake: 'shake 0.2s infinite ease-in-out',
         shakeSm: 'shakeSm 0.2s infinite ease-in-out',
       },
