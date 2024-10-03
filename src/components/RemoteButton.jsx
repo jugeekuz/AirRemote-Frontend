@@ -114,10 +114,10 @@ const CheckBoxAnimation = ({durationSeconds}) => (
       <style jsx>{`
         .path {
           	stroke-dasharray: 1000;
-			stroke-dashoffset: 1000;
         }
         .check {
           	animation: dash-check ${durationSeconds}s ease-in-out forwards; 
+			animation-delay: -${durationSeconds / 1.6}s;
         }
         
         @keyframes dash-check {
@@ -125,7 +125,7 @@ const CheckBoxAnimation = ({durationSeconds}) => (
 				stroke-dashoffset: 1000;
 			}
 			100% {
-				stroke-dashoffset: 0;
+				stroke-dashoffset: 2000;
 			}
         }
 		@-webkit-keyframes dash-check {
@@ -133,7 +133,7 @@ const CheckBoxAnimation = ({durationSeconds}) => (
 				stroke-dashoffset: 1000;
 			}
 			100% {
-				stroke-dashoffset: 0;
+				stroke-dashoffset: 2000;
 			}
         }
       `}</style>
