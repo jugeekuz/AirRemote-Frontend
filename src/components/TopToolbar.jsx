@@ -19,7 +19,8 @@ const TopToolbar = () => {
 				<img
 				src={logoImg}
 				alt="Logo"
-				className="w-9 h-9 "
+				className="w-9 h-9 cursor-pointer"
+				onClick={()=>navigate('/')}
 				/>
 			}
 			
