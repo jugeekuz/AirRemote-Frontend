@@ -82,7 +82,7 @@ const Remotes = () => {
       If the device loses connection it will take up to 10 minutes to show up as disconnected.
     </NoticeBox>
     
-    {data ? 
+    {data && data?.length > 0 ? 
       
       <Grid data={data} deviceData={deviceData} length={data.length}/>
       : null

@@ -68,7 +68,7 @@ const Devices = () => {
       <NoticeBox>
         If the device loses connection it will take up to 10 minutes to show up as disconnected.
       </NoticeBox>
-      {deviceData ? 
+      {deviceData && deviceData?.length > 0? 
         <Grid length={deviceData.length} deviceData={deviceData}/>
         : null
       }
