@@ -4,9 +4,9 @@ import {
 	useSortable
 } from "@dnd-kit/sortable";
 
-import { Grip } from "lucide-react";
+import { Grip, CircleAlert } from "lucide-react";
 import { CSS } from '@dnd-kit/utilities';
-import { Switch } from "@nextui-org/react";
+import { Switch, Tooltip } from "@nextui-org/react";
 
 import usePost from "../hooks/usePost"
 import useError from '../hooks/useError';
@@ -22,6 +22,7 @@ export const TileAutomation = ({id, item, refetch}) => {
 	const apiUrl = config.apiUrl;
 
 	const [isEnabled, setIsEnabled] = useState(item?.automationState === "ENABLED")
+	const [isOpenTooltip, setIsOpenTooltip] = useState(false)
 	const { postItem, success, error, data } = usePost(`${apiUrl}/automations/${item?.automationId}/state`);
 	const [date, setDate] = useState("--:--")
 
@@ -63,8 +64,15 @@ export const TileAutomation = ({id, item, refetch}) => {
 	useEffect(() => {
 		if (!error) return;
 		errorAttributes.setError(error);
-	  },[error])
+	},[error])
 	
+	useEffect(() => {
+		if (!isOpenTooltip) return;
+		setTimeout(() => {
+			setIsOpenTooltip(false);
+		}, 2000)
+	},[isOpenTooltip])
+
 	// Convert date from utc to local
 	useEffect(() => {
 		if (!item?.automationHour || !item?.automationMinutes || !item?.automationDays) return;
@@ -78,8 +86,6 @@ export const TileAutomation = ({id, item, refetch}) => {
 
 		// Time difference might shift the day back or forward
 		const dayDifference = utcDate.getDate() - utcDate.getUTCDate() ;
-		console.log(`dayDifference : ${dayDifference}`);
-		console.log(`item.automationDays : ${item.automationDays}`);
 		// Shift days one back to have Sunday be last day
 		const weekOrder = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 		let daysExploded = item.automationDays.split(/[, -]/);
@@ -88,7 +94,6 @@ export const TileAutomation = ({id, item, refetch}) => {
 			.map(day => (day - 1 + dayDifference)%7 + 1)
 			.map(day => day == 1 ? 7 : (day-1))
 			.sort((a, b) => a - b)
-		console.log(`Days exploded : ${daysExploded}`)
 		const days = daysExploded.map(day => weekOrder[day-1])
 		
 		// Make consecutive days appear with a dash in between ex Mon,Tue,Wed -> Mon-Wed
@@ -133,7 +138,22 @@ export const TileAutomation = ({id, item, refetch}) => {
 			ref={setNodeRef} 
 			className={`relative bg-gray-100 rounded-lg border-gray-200 h-24 select-none border-2 ${(editMode && !dragging) ? "animate-shakeSm" : ""}`}
 			style={{...style, ...getRandomAnimationDelay()}} 
-		>
+		>	
+			{
+				item?.runError === "True" ?
+					<Tooltip color={"danger"} content={item.errorMessage} isOpen={isOpenTooltip}>
+						<div
+							onMouseEnter={() => setIsOpenTooltip(true)}
+							onMouseLeave={() => setIsOpenTooltip(false)}
+							onPress={() => setIsOpenTooltip(!isOpenTooltip)} 
+							className="flex justify-center items-center absolute top-0 left-10 -translate-y-1/2 rounded-full bg-red-500 w-[25px] h-[25px]">
+							<span className="text-white font-normal font-poppins">!</span>
+						</div>
+					</Tooltip>
+				: null
+
+			}
+					
 			<div className="flex flex-row w-full h-full justify-between overflow-hidden ">
 				<div className="flex h-full  items-center mr-1">
                     <div className="flex flex-row justify-center items-center 
