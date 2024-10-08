@@ -21,16 +21,15 @@ const RemoteButtons = () => {
 	const apiUrl = config.apiUrl;
 	const { remoteName } = useParams();
   const attributes = useError("");
-
-	const macAddress = useRef(null);
+  const [macAddress, setMacAddress] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const { data: remoteData, loading, error: remoteError, refetch: remoteRefetch } = useFetchMemo(`${apiUrl}/remotes/${remoteName}`);
-  const { data: deviceData, loading: deviceLoading, error: deviceError, refetch: deviceRefetch } = useFetchMemo(macAddress.current ? `${apiUrl}/devices/${macAddress.current}` : null);
+  const { data: deviceData, loading: deviceLoading, error: deviceError, refetch: deviceRefetch } = useFetchMemo(macAddress ? `${apiUrl}/devices/${macAddress}` : null);
 
 
   useEffect(() => {
 		if (!remoteData?.macAddress) return;
-    macAddress.current = remoteData.macAddress;
+    setMacAddress(remoteData.macAddress);
     deviceRefetch();
   }, [remoteData]);
 
