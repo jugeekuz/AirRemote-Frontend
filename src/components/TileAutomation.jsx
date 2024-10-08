@@ -165,7 +165,7 @@ export const TileAutomation = ({id, item, refetch}) => {
 					</div> 
                 </div>
 
-				<div className="flex flex-col h-full min-w-1/2 justify-center items-start ml-1">
+				<div className="flex flex-col h-full min-w-[30%] justify-center items-start ml-1">
                     <div className="flex w-full">
                         <span className="text-sm font-semibold text-gray-800 text-left">{item?.automationName}</span>
                     </div>

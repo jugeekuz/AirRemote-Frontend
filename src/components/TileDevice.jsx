@@ -52,7 +52,7 @@ export const TileDevice = ({id, item, isConnected, refetch}) => {
 	const IotImg = () => <div 
 							className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0 -ml-3"
 							style={{ backgroundImage: `url(${esp32Img})`,
-									backgroundSize: '86%',
+									backgroundSize: 'auto 100%',
 									backgroundPosition: 'bottom left'}}
 						></div>
 	return (

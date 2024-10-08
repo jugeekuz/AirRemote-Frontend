@@ -61,49 +61,49 @@ export const TileRemote = ({id, item, isConnected, refetch}) => {
 	const RgbImg = () => <div 
 							className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0"
 							style={{ backgroundImage: `url(${rgbStripImg})`,
-									backgroundSize: '91%',
+									backgroundSize: 'auto 100%',
 									backgroundPosition: 'bottom left'}}
 						></div>
 
 	const DehumidifierImg = () => <div 
 									className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0 ml-2"
 									style={{ backgroundImage: `url(${dehumidifierImg})`,
-											backgroundSize: '75%',
+											backgroundSize: 'auto 100%',
 											backgroundPosition: 'bottom left'}}
 								></div>
 
 	const TvImg = () => <div 
 							className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0"
 							style={{ backgroundImage: `url(${tvImg})`,
-									backgroundSize: '80%',
+									backgroundSize: 'auto 100%',
 									backgroundPosition: 'bottom left'}}
 						></div>
 
 	const AirConditionerImg = () => <div 
 										className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0  -ml-10 "
 										style={{ backgroundImage: `url(${airconditionerImg})`,
-												backgroundSize: '90%',
+												backgroundSize: 'auto 100%',
 												backgroundPosition: 'bottom left'}}
 									></div>
 	
 	const HeaterImg = () => <div 
 								className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0"
 								style={{ backgroundImage: `url(${heaterImg})`,
-										backgroundSize: '90%',
+										backgroundSize: 'auto 100%',
 										backgroundPosition: 'bottom left'}}
 							></div>		
 
 	const SpeakerImg = () => <div 
 								className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0 -ml-3"
 								style={{ backgroundImage: `url(${speakerImg})`,
-										backgroundSize: '80%',
+										backgroundSize: 'auto 100%',
 										backgroundPosition: 'bottom left'}}
 							></div>
 
 	const UniDeviceImg = () => <div 
 									className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0 "
 									style={{ backgroundImage: `url(${uniDeviceImg})`,
-											backgroundSize: '92%',
+											backgroundSize: 'auto 100%',
 											backgroundPosition: 'bottom left'}}
 								></div>
 			
@@ -154,7 +154,7 @@ export const TileRemote = ({id, item, isConnected, refetch}) => {
 					
 				</div>
 				<div className="relative flex h-2/3 w-full items-end justify-end overflow-visible">
-
+					
 					{mapping[deviceType]}
 					
 					<div className="flex h-full justify-end items-end">
