@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { ArrowLeft, Settings } from "lucide-react";
 import UserLogo from '../assets/icons/avatar.svg?react';
-
+import AppLogo from '../assets/icons/airremote-logo-short.svg?react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 
@@ -16,10 +16,8 @@ const TopToolbar = () => {
 			{ isNested?
 				<div onClick={()=>navigate(-1)} className="flex justify-center items-center w-8 h-8 rounded-md bg-gray-50 cursor-pointer"><ArrowLeft /></div> 
 				:
-				<img
-				src={logoImg}
-				alt="Logo"
-				className="w-9 h-9 cursor-pointer"
+				<AppLogo
+				className="w-10 h-10 cursor-pointer"
 				onClick={()=>navigate('/')}
 				/>
 			}
