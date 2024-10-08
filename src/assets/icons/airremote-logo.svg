@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="842" height="167" viewBox="0 0 842 167">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 150px;
+        font-family: Coolvetica;
+      }
+
+      .cls-2 {
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <text id="AirRemote" class="cls-1" x="194" y="125">AirRemote</text>
+  <path class="cls-2" d="M92-1h71L82,84H9L92-1h0Z"/>
+  <path id="Rectangle_1_copy" data-name="Rectangle 1 copy" class="cls-2" d="M83,84.5h71l-81,85H0l83-85h0Z"/>
+</svg>
