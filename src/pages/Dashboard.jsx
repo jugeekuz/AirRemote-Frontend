@@ -54,7 +54,6 @@ const Dashboard = () => {
 
     useEffect(() => {
       if(!costData || !costData?.totalCost) return;
-      console.log(costData)
       const num = parseFloat(costData.totalCost);
       const roundedCost = Math.round(num * 100) / 100;
       
@@ -207,7 +206,7 @@ const Dashboard = () => {
             </div>   
 
         </div>
-        {/* <ModalError {...attributes}/> */}
+        <ModalError {...attributes}/>
         </>);
 };
 

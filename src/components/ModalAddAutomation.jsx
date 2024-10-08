@@ -336,7 +336,6 @@ const ScheduleSelectionStep = ({setCronJob}) => {
 		const utcHours = utcTime.getUTCHours().toString();
 		const utcMinutes = utcTime.getUTCMinutes().toString();
 
-		console.log(`${utcMinutes} ${utcHours} ? * ${cronDays} *`)
 		return `${utcMinutes} ${utcHours} ? * ${cronDays} *`;
 	}
 

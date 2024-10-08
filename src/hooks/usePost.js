@@ -22,7 +22,6 @@ const usePost = (url) => {
       }
       setSuccess(true);
       const result = await response.json();
-      console.log(result)
       setData(result);
       return result;
     } catch (e) {

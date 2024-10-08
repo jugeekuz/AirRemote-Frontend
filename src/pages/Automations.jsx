@@ -63,7 +63,7 @@ const Automations = () => {
 				</div>
 			</div>
 			<NoticeBox>
-				If the device loses connection it will take up to 10 minutes to show up as disconnected.
+				Make sure devices are connected, otherwise the automation won't run.
 			</NoticeBox>
 			
 			{data && data?.length > 0 ? 

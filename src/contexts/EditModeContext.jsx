@@ -7,7 +7,6 @@ export const EditModeProvider = ({ children }) => {
 
   const toggleEditMode = () => {
     setEditMode(prevMode => !prevMode);
-    console.log(editMode)
   };
 
   return (

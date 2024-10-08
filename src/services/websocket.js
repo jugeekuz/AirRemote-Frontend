@@ -6,8 +6,6 @@ export const  wsHandler = async (endpoint, message, timeout, successResponseForm
 
 	socket.onopen = () => {
 		socket.send(JSON.stringify(message));
-		console.log("Websocket connection started");
-		console.log(`Sending message : ${JSON.stringify(message)}`)
 		timeoutId = setTimeout(() => {
 			setStatus('error');
 			setError("Timeout reached without response from remote end.");
@@ -17,13 +15,9 @@ export const  wsHandler = async (endpoint, message, timeout, successResponseForm
 
     socket.onmessage = (event) => {
 		clearTimeout(timeoutId);
-		console.log(`received ${event.data}`)
 		if(successResponseFormat(event.data)){
-			console.log('sucess');
-			console.log(event.data);
 			setStatus('success');
 		} else {
-			console.log(event);
 			event?.data && (setError(event.data));
 			setStatus('error');
 			const response = JSON.parse(event.data);

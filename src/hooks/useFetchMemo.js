@@ -17,6 +17,7 @@ const useFetchMemo = (url) => {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 			const result = await response.json();
+			console.log(`Fetched  URL : ${url} RESPONSE : ${result}`)
 			setData(result.body);
 		} catch (error) {
 			setError(error.message);
