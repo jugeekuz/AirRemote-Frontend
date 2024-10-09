@@ -145,7 +145,7 @@ export const TileAutomation = ({id, item, refetch}) => {
 						<div
 							onMouseEnter={() => setIsOpenTooltip(true)}
 							onMouseLeave={() => setIsOpenTooltip(false)}
-							onPress={() => setIsOpenTooltip(!isOpenTooltip)} 
+							onMouseDown={() => setIsOpenTooltip(!isOpenTooltip)} 
 							className="flex justify-center items-center absolute top-0 left-10 -translate-y-1/2 rounded-full bg-red-500 w-[25px] h-[25px]">
 							<span className="text-white font-normal font-poppins">!</span>
 						</div>

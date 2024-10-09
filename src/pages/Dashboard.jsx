@@ -35,7 +35,7 @@ const Dashboard = () => {
     
     const date = new Date();
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const currentMonthName = monthNames[date.getMonth()];
+    const lastMonthName = monthNames[(date.getMonth() - 1 + 12)%12];
     
 
     useEffect(() => {
@@ -53,8 +53,8 @@ const Dashboard = () => {
     },[automationData])
 
     useEffect(() => {
-      if(!costData || !costData?.totalCost) return;
-      const num = parseFloat(costData.totalCost);
+      if(!costData || !costData[0]?.totalCost) return;
+      const num = parseFloat(costData[0].totalCost);
       const roundedCost = Math.round(num * 100) / 100;
       
       setCost(roundedCost.toFixed(2));
@@ -142,7 +142,7 @@ const Dashboard = () => {
                            <span className="font-medium text-xl text-white ">{cost} $</span>
                         </div>
                         <div className="flex w-full justify-center items-center text-center">
-                        <span className="text-sm font-normal text-gray-100 font-roboto">Cost <span className="font-semibold text-white">{currentMonthName}</span></span>
+                        <span className="text-sm font-normal text-gray-100 font-roboto">Cost <span className="font-semibold text-white">{lastMonthName}</span></span>
                         </div>
                     </div>
 

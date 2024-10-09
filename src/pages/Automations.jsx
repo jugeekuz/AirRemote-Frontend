@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import config from "../configs/config";
 
 import useError from "../hooks/useError";
@@ -18,13 +18,28 @@ const Automations = () => {
 	const apiUrl = config.apiUrl;
 	const attributes = useError("");
 
+	const isCleaned = useRef(false);
 	const { data, loading, error, refetch } = useFetchMemo(`${apiUrl}/automations`);
 
+	useEffect(() => {
+		if (!data || isCleaned.current) return;
+		fetch(`${apiUrl}/automations/clean`, {
+			method: 'POST',
+			headers: {
+			  'Content-Type': 'application/json',
+			}
+		})
+		.then(() => {
+			isCleaned.current = true;
+		})
+
+	}, [data])
+	
 	useEffect(() => {
 		if (!error) return;
 		attributes.setError(error);
 	},[error])
-	
+
 	// This is a workaround to rerender this component
 	// If this component is only dependent on `data`, then because of shallow comparison it won't rerenderW
 	const Grid = ({length, data}) => (

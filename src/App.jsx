@@ -23,15 +23,17 @@ function App() {
           <SidebarItem icon={<Usb size={20} strokeWidth={"1.7px"}/>} text="Devices" to="/devices"/>
           <SidebarItem icon={<CalendarCog size={20} strokeWidth={"1.7px"}/>} text="Automations" to="/automations"/>
         </Sidebar>
-        
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/remotes" element={<Remotes />} />
-          <Route path="/remotes/:remoteName" element={<RemoteButtons/>} />
-          <Route path="/devices" element={<Devices />} />
-          <Route path="/automations" element={<Automations />} />
-        </Routes>
+
+        <div className="px-2 sm:px-0">
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/remotes" element={<Remotes />} />
+            <Route path="/remotes/:remoteName" element={<RemoteButtons/>} />
+            <Route path="/devices" element={<Devices />} />
+            <Route path="/automations" element={<Automations />} />
+          </Routes>
         <div className="mb-16 sm:mb-0"></div>
+        </div>
 
         <NavigationBar>
           <NavigationBarItem icon={<LayoutDashboard size={20} strokeWidth={"1.7px"} />} text="Dashboard" to="/"/>
