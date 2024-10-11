@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
 	DndContext,
 	closestCenter,
@@ -27,8 +27,10 @@ export const TileGrid = (props) => {
 	const [activeId, setActiveId] = useState(null);
 	const { setDragging } = useContext(DraggingContext);
 	const [childrenOrder, setChildrenOrder] = useState(
+		props?.itemOrder ||
         Array.from({ length: React.Children.count(props.children) }, (_, index) => index)
     );
+
 	const sensors = useSensors(
 		useSensor(MouseSensor, {
 		  activationConstraint: {
@@ -46,6 +48,11 @@ export const TileGrid = (props) => {
 		}),
 	  );
 	
+	useEffect(() => {
+		if (!props?.onOrderChange) return;
+		props.onOrderChange(childrenOrder);
+	},[childrenOrder])
+
 	const handleDragStart = (event) => {
 		setActiveId(event.active.id);
 		setDragging(true);
@@ -89,33 +96,3 @@ export const TileGrid = (props) => {
 		</DndContext>
 	)
 }
-
-// const Tile = (props) => {
-// 	const {
-// 		attributes,
-// 		listeners,
-// 		setNodeRef,
-// 		transform,
-// 		transition,
-// 		isDragging
-// 	} = useSortable({ id: props.id });
-
-	
-// 	const style = {
-// 		transform: CSS.Translate.toString(transform),
-// 		transition,
-// 		zIndex: isDragging ? "100": "auto",
-// 		opacity: isDragging ? 0.3 : 1
-// 	};
-
-// 	return (
-// 		<div 
-// 			ref={setNodeRef} 
-// 			style={style} 
-// 			className="bg-gray-100 rounded-lg border border-gray-300 h-32 p-1" 
-// 			{...listeners} 
-// 			{...attributes} >
-// 				{props.children}
-// 		</div>
-// 	)
-// }

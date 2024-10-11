@@ -12,6 +12,8 @@ import Devices from './pages/Devices';
 import Remotes from './pages/Remotes';
 import RemoteButtons from './pages/RemoteButtons';
 import Dashboard from './pages/Dashboard';
+import SignUp from './pages/SignUp';
+import SignIn from './pages/SignIn';
 
 function App() {
   
@@ -19,21 +21,21 @@ function App() {
       <div className="flex flex-col sm:flex-row w-screen h-100dvh sm:px-0 bg-white">
         <Sidebar>          
           <SidebarItem icon={<LayoutDashboard size={20} strokeWidth={"1.7px"}/>} text="Dashboard" to="/"/>
-          <SidebarItem icon={<Remote className="w-6 h-6 stroke-2"/>} text="Remotes" to="/remotes" />
+          <SidebarItem icon={<Remote className="w-6 h-6 stroke-current stroke-[0.2]"/>} text="Remotes" to="/remotes" />
           <SidebarItem icon={<Usb size={20} strokeWidth={"1.7px"}/>} text="Devices" to="/devices"/>
           <SidebarItem icon={<CalendarCog size={20} strokeWidth={"1.7px"}/>} text="Automations" to="/automations"/>
         </Sidebar>
 
-        <div className="px-2 sm:px-0">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/remotes" element={<Remotes />} />
-            <Route path="/remotes/:remoteName" element={<RemoteButtons/>} />
-            <Route path="/devices" element={<Devices />} />
-            <Route path="/automations" element={<Automations />} />
-          </Routes>
-        <div className="mb-16 sm:mb-0"></div>
-        </div>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/remotes" element={<Remotes />} />
+          <Route path="/remotes/:remoteName" element={<RemoteButtons/>} />
+          <Route path="/devices" element={<Devices />} />
+          <Route path="/automations" element={<Automations />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/login" element={<SignIn />} />
+        </Routes>
+        <div className="flex mb-16 sm:mb-0"></div>
 
         <NavigationBar>
           <NavigationBarItem icon={<LayoutDashboard size={20} strokeWidth={"1.7px"} />} text="Dashboard" to="/"/>

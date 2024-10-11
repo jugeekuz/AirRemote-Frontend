@@ -55,7 +55,7 @@ const Remotes = () => {
 						></div>
   return (
     <>
-    <div className="w-full overflow-x-hidden overflow-y-scroll">
+    <div className="px-2 sm:px-0 w-full overflow-x-hidden overflow-y-scroll">
     <TopToolbar/>
     <EditModeProvider>
       

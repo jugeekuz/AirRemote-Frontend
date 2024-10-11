@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
 	DndContext,
 	closestCenter,
@@ -27,8 +27,15 @@ export const TileList = (props) => {
 	const [activeId, setActiveId] = useState(null);
 	const { setDragging } = useContext(DraggingContext);
 	const [childrenOrder, setChildrenOrder] = useState(
+		props?.itemOrder ||
         Array.from({ length: React.Children.count(props.children) }, (_, index) => index)
     );
+
+	useEffect(() => {
+		if (!props?.onOrderChange) return;
+		props.onOrderChange(childrenOrder);
+	},[childrenOrder])
+
 	const sensors = useSensors(
 		useSensor(MouseSensor, {
 		  activationConstraint: {

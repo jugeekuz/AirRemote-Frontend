@@ -122,7 +122,7 @@ const Dashboard = () => {
     )
     return (
         <>
-        <div className="w-full overflow-x-hidden overflow-y-scroll">
+        <div className="px-2 sm:px-0 w-full overflow-x-hidden overflow-y-scroll">
             <TopToolbar/>
             <div className="flex flex-col w-full h-16 items-start justify-end px-3 pb-1  mt-1">
                 <span className="text-2xl font-semibold font-roboto">Hello, Jovana 👋</span>
