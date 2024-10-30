@@ -16,13 +16,17 @@ import { useParams } from "react-router-dom"
 
 import useError from "../hooks/useError";
 import usePost from "../hooks/usePost";
+import useFetchMemo from "../hooks/useFetchMemo";
 
 import ModalError from "./ModalError";
 import config from "../configs/config";
 
-export const ModalAddDevice = ({deviceData, onAddRemote}) => {
+export const ModalAddDevice = ({deviceData, onAddDevice}) => {
 	const apiUrl = config.apiUrl;
-	
+	const { data: tokenData , loading: tokenLoading , error: tokenError, refetch: tokenRefetch } = useFetchMemo(`${apiUrl}/deviceToken`);
+	const { postItem, success, error: deviceError, data } = usePost(`${apiUrl}/devices`);
+	const deviceToken = tokenData?.deviceToken || null;
+
 	const [modalState, setModalState] = useState(1);
 	const [deviceName, setDeviceName] = useState("");	
 
@@ -40,7 +44,6 @@ export const ModalAddDevice = ({deviceData, onAddRemote}) => {
 		return regex.test(deviceName) ? false : true;
 	}, [deviceName]);
 
-
 	useEffect(() => {
 		onClose();
 		setModalState(1);
@@ -50,6 +53,7 @@ export const ModalAddDevice = ({deviceData, onAddRemote}) => {
 	useEffect(()=>{
 		if (modalState > 4 || isOpen) return;
 		
+		tokenRefetch();
 		setDeviceName("");
 		setModalState(1);
 	},[isOpen])
@@ -57,14 +61,31 @@ export const ModalAddDevice = ({deviceData, onAddRemote}) => {
 	const stepsMapping = {
 		1: <Step1 />,
 		2: <Step2 isInvalid={isInvalid} deviceName={deviceName} setDeviceName={setDeviceName}/>,
-		3: <Step3 authKey={"0xdj38S8dDFGd=sDfFedsf"}/>
+		3: <Step3 authKey={deviceToken || "Error Loading Token"}/>
 	}
 	const incrStep = () => {
 		if (modalState === 2 && (isInvalid || deviceName === "")) return;
 		setModalState(modalState+1);
-	}
+	}	
 
-	
+	const createDevice = () => {
+		if (!deviceName || !deviceToken) {
+			setError("Device name and token can't be empty.");
+			return;
+		};
+
+		const payload = {
+			deviceName: deviceName,
+			token: deviceToken
+		}
+
+		postItem(payload)
+		.then(() => {
+			onAddDevice();
+			onClose();
+		})
+
+	}
 
 	return (
 		<>
@@ -93,7 +114,7 @@ export const ModalAddDevice = ({deviceData, onAddRemote}) => {
 				</>
 				:
 				<>
-				<Button color="primary" onPress={onClose}>
+				<Button color="primary" onPress={createDevice}>
 					Finish
 				</Button>
 				</>
@@ -141,10 +162,10 @@ const Step2 = ({isInvalid, deviceName, setDeviceName}) => (
 )
 
 const Step3 = ({authKey}) => (
-	<div className="-mt-1 -mb-1">
+	<div className="-mt-1 -mb-1 max-w-lg">
 		<div className="flex mb-3">Copy the authentication key below and save it somewhere safe, as you'll need to provide it when setting up the device.</div>
 		<div className="flex mb-1"><span className="font-medium">Authentication key</span></div>
-		<Snippet size={"lg"} symbol="" color="default">{authKey}</Snippet>
+		<Snippet size="lg" symbol="" color="default" className="text-xs">{authKey}</Snippet>
 		<div className="flex mt-3 mb-3">Follow the instructions previously mentioned to finish setting up the device</div>
 
 	</div>

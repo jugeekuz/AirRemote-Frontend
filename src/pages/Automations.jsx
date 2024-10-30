@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from "react";
 import config from "../configs/config";
-
+import api from "../api/api";
 import useError from "../hooks/useError";
 import useFetchMemo from "../hooks/useFetchMemo";
 
@@ -23,17 +23,21 @@ const Automations = () => {
 
 	useEffect(() => {
 		if (!data || isCleaned.current) return;
-		fetch(`${apiUrl}/automations/clean`, {
-			method: 'POST',
+		api({
+			method: "POST",
+			url: "/api/automations/clean",
 			headers: {
 			  'Content-Type': 'application/json',
-			}
+			},
 		})
 		.then(() => {
-			isCleaned.current = true;
+		  isCleaned.current = true;
 		})
-
-	}, [data])
+		.catch(err => {
+		  console.error("Error in cleaning automation:", err.message);
+		});
+	  
+	  }, [data]);
 	
 	useEffect(() => {
 		if (!error) return;

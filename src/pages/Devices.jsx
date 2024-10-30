@@ -61,7 +61,7 @@ const Devices = () => {
         
         <div className="pr-3">
           <Toolbar>
-            <ModalAddDevice deviceData={deviceData} onAddRemote={deviceRefetch}/>
+            <ModalAddDevice deviceData={deviceData} onAddDevice={deviceRefetch}/>
           </Toolbar>
         </div>
       </div>

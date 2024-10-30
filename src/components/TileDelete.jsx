@@ -11,11 +11,11 @@ const TileDelete = ({url, refetch, position}) => {
 	const { remoteName } = useParams();
 	const attributes = useError("");
 
-	const { success, loading , error , refetch: deleteRefetch } = useDelete(null);
+	const { success, loading , error , refetch: deleteRefetch } = useDelete(url);
 	const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
 
 	const onPressYes = () => {
-		deleteRefetch(url).then(refetch);
+		deleteRefetch().then(refetch);
 		onClose();
 	}
 

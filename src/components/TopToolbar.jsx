@@ -1,16 +1,28 @@
 import React, {useState} from "react";
-import { ArrowLeft, Settings } from "lucide-react";
+import { ArrowLeft, Settings, LogOut, UserPlus } from "lucide-react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Avatar} from "@nextui-org/react";
 import UserLogo from '../assets/icons/avatar.svg?react';
 import AppLogo from '../assets/icons/airremote-logo-short.svg?react';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-
+import { logout } from "../services/authenticate";
+import { useAuth } from "../contexts/AuthContext";
 import logoImg from '../assets/imgs/logo.png'
 
 const TopToolbar = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const { setToken } = useAuth();
 	const isNested = location.pathname.split('/').filter(Boolean).length > 1;
+
+	const dropdownItems = [
+	{
+		key: "invite",
+		label: "Invite a friend"
+	},
+	{
+		key: "logout",
+		label: "Logout"
+	}]
 	return (
 		<div className="flex justify-between items-center h-16 w-full p-3">
 			{ isNested?
@@ -23,10 +35,43 @@ const TopToolbar = () => {
 			}
 			
 			<div className="flex items-center">
-				<div className="flex w-8 h-8 items-center justify-center mx-2 rounded-full ">
+				{/* <div className="flex w-8 h-8 items-center justify-center mx-2 rounded-full ">
 					<Settings size={20}/>
-				</div>
-				<UserLogo className="w-6"/>
+				</div> */}
+				
+				<Dropdown>
+					<DropdownTrigger>
+						<Button 
+							isIconOnly 
+							className="bg-transparent w-7"
+						>
+							<UserLogo className="w-8 h-8"/>
+						</Button>
+						{/* <Avatar isBordered radius="sm" showFallback src='https://images.unsplash.com/broken' className="w-8 h-8" /> */}
+						{/* <UserLogo className="w-8 h-8"/> */}
+					</DropdownTrigger>
+					<DropdownMenu aria-label="Dynamic Actions">
+						<DropdownItem
+							key="invite"
+							startContent={<UserPlus size={18}/>}
+						>
+							Invite a friend
+						</DropdownItem>
+						<DropdownItem
+							key="logout"
+							className="text-danger"
+							color="danger"
+							onClick={() => {
+								logout();
+								setToken(null);
+							}}
+							startContent={<LogOut size={18}/>}
+						>
+							Logout
+						</DropdownItem>
+						
+					</DropdownMenu>
+				</Dropdown>
 			</div>
 		</div>
 	)	

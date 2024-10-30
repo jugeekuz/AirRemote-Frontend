@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
+import api from "../api/api";
 
 const usePost = (url) => {
   const [success, setSuccess] = useState(false);
@@ -6,27 +7,23 @@ const usePost = (url) => {
   const [data, setData] = useState(null);
 
   const postItem = async (item) => {
-    
     try {
-      const response = await fetch(url, {
-        method: 'POST',
+      const response = await api({
+        method: "POST",
+        url: url,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(item),
+        data: item,
       });
 
-      if (!response.ok) {
-        setError(response);
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
       setSuccess(true);
-      const result = await response.json();
-      setData(result);
-      return result;
+      setData(response.data);
+      return response.data;
+
     } catch (e) {
-      setError(e.message);
-      console.error("Failed to fetch data:", e);
+      setError(e.response ? e.response.statusText : e.message);
+      console.error("Failed to post data:", e);
     } finally {
       setSuccess(false);
     }

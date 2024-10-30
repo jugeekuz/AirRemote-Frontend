@@ -1,61 +1,30 @@
 import React, {useEffect, useState} from "react";
+import config from  "../configs/config";
 import {Input, Button, Divider} from "@nextui-org/react";
 import Logo from '../assets/icons/airremote-logo.svg?react';
 import GoogleLogo from '../assets/icons/google-logo.svg?react';
 import GithubLogo from '../assets/icons/github-logo.svg?react';
 import { useNavigate } from "react-router-dom";
-import useError from "../hooks/useError";
-import ModalError from "../components/ModalError";
-import { signup } from "../services/authenticate";
-const SignUp = () => {
+import { authenticate } from "../services/authenticate";
+import { useAuth } from "../contexts/AuthContext";
+const Login = () => {
   const navigate = useNavigate();
-  const attributes = useError("");
-
-  const [username, setUsername] = useState('');
-  const [isValidUser, setIsValidUser] = useState(true);
+  const { token, setToken } = useAuth();
   const [email, setEmail] = useState('');
-  const [isValidEmail, setIsValidEmail] = useState(true);
   const [password, setPassword] = useState('');
-  const [isVisible, setIsVisible] = React.useState(false);
-  const [isValidPass, setIsValidPass] = useState(true);
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [isValidPassConf, setIsValidPassConf] = useState(true);
-  const [isVisibleConf, setIsVisibleConf] = React.useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
-  const validate = () => {
-    const usernameRegex = /^[a-zA-z0-9_.]{1,32}$/;
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const passwordRegex = /^[a-zA-Z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]{1,64}$/;
-    let validFlag = true;
-    if (!usernameRegex.test(username)){
-      setIsValidUser(false);
-      validFlag = false;
-    }
-    if (!emailRegex.test(email)){
-      setIsValidEmail(false);
-      validFlag = false;
-    }
-    if (!passwordRegex.test(password)){
-      setIsValidPass(false);
-      validFlag = false;
-    }
-    if (password !== passwordConfirmation){
-      setIsValidPass(false);
-      setIsValidPassConf(false);
-      validFlag = false;
-    }
-    return validFlag;
-  }
+  const login = () => {
+    if (email === '' || password === '') return;
 
-  const signUp = () => {
-    if (!validate()) return;
-    signup(username, email, password)
-    .then(() => navigate('/login'))
+    authenticate(email, password)
+    .then((res) => {
+      setToken(res.data.id_token);
+    })
     .catch((error) => error.response ? alert(error.response.data.message) : alert(error.message))
-
   }
+
   return (
-    <>
     <div className="flex w-full min-h-screen justify-center items-center">
       <div className="flex flex-col items-center justify-center min-w-[90%] sm:min-w-[70%] md:min-w-[60%] lg:min-w-[50%] xl:min-w-[30%] 2xl:min-w-[20%]">
 
@@ -63,44 +32,30 @@ const SignUp = () => {
         <div className="flex flex-col justify-center items-center text-start w-full">
           <Logo className="w-64 h-16 -ml-9"/>
           <span className="text-sm text-gray-500 -mt-2">
-              Create an account to get started
+              Log in to your account to continue
             </span>
         </div>
 
         {/* First section */}
         <div className="flex-col w-full my-5">
           <Input
-            isRequired     
-            value={username}       
-            isInvalid={!isValidUser}
-            onValueChange={setUsername}
-            type="username"
-            label="Username"
-            placeholder="Enter your username"
-            variant="bordered"
-            className={` ${ !isValidUser? "border-2 !border-red-400": "border-1"} rounded-t-xl remove-child-border hover:border-gray-400 focus-within:border-gray-400`}
-          />
-          <Input
             isRequired
-            value={email}       
-            isInvalid={!isValidEmail}
-            onValueChange={setEmail}
+            onChange={((e) => setEmail(e.target.value))}
             type="email"
             label="Email"
             placeholder="Enter your email"
             variant="bordered"
-            className={`${ !isValidEmail? "border-2 !border-red-400": "border-1 border-t-0 "} remove-child-border hover:border-gray-400 hover:border-t-1 focus-within:border-t-1 focus-within:border-gray-400`}
+            className="border-1 rounded-t-xl remove-child-border hover:border-gray-400 focus-within:border-gray-400"
           />
+          
           <Input
             isRequired
-            value={password}       
-            isInvalid={!isValidPass}
-            onValueChange={setPassword}
+            onChange={((e) => setPassword(e.target.value))}
             type={isVisible ? "text" : "password"}
             label="Password"
             placeholder="Enter your password"
             variant="bordered"
-            className={`${ !isValidPass? "border-2 !border-red-400": "border-1  border-t-0"} remove-child-border hover:border-gray-400 hover:border-t-1 focus-within:border-t-1 focus-within:border-gray-400`}
+            className="border-1 border-t-0 rounded-b-xl remove-child-border hover:border-gray-400 hover:border-t-1 focus-within:border-t-1 focus-within:border-gray-400"
             endContent={
               <button className="focus:outline-none" type="button" onClick={() => setIsVisible(!isVisible)} aria-label="toggle password visibility">
                 {isVisible ? (
@@ -111,32 +66,14 @@ const SignUp = () => {
               </button>
             }
           />
-          <Input
-            isRequired
-            value={passwordConfirmation}       
-            isInvalid={!isValidPassConf}
-            onValueChange={setPasswordConfirmation}
-            type={isVisibleConf ? "text" : "password"}
-            label="Confirm password"
-            placeholder="Confirm your password"
-            variant="bordered"
-            className={`${ !isValidPassConf? "border-2 !border-red-400": "border-1 border-t-0 "} rounded-b-xl remove-child-border hover:border-gray-400 hover:border-t-1 focus-within:border-t-1 focus-within:border-gray-400`}
-            endContent={
-              <button className="focus:outline-none" type="button" onClick={() => setIsVisibleConf(!isVisibleConf)} aria-label="toggle password visibility">
-                {isVisibleConf ? (
-                  <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                ) : (
-                  <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                )}
-              </button>
-            }
-          />
-          <Button onClick={signUp} className="w-full mt-6 bg-gradient-to-tr from-blue-500 to-blue-700" color="primary">
-            Sign Up
+          
+          <Button onClick={login} className="w-full mt-6 bg-gradient-to-tr from-blue-500 to-blue-700" color="primary">
+            Log In
           </Button>
         </div>
 
-        {/* Divider */}
+        {/* Social Logins */}
+        {/* Future Implementation */}
         <div className="flex flex-row w-full justify-between items-center mb-5">
           <Divider className="max-w-[40%]"/>
           <span className="text-sm text-gray-500">
@@ -145,26 +82,22 @@ const SignUp = () => {
           <Divider className="max-w-[40%]"/>
         </div>
 
-        {/* Social Logins */}
         <div className="flex flex-col w-full">
           <Button className="w-full bg-transparent border-2 border-gray-200 text-gray-600" color="primary">
-            <GoogleLogo className="w-5"/> Sign Up with Google
+            <GoogleLogo className="w-5"/> Continue with Google
           </Button>
           <Button className="w-full bg-transparent border-2 border-gray-200 text-gray-600 mt-1" color="primary">
-            <GithubLogo className="w-5 h-5"/> Sign Up with Github
+            <GithubLogo className="w-5 h-5"/> Continue with Github
           </Button>
         </div>
 
         <div className="mt-2">
-          <span className="text-sm text-gray-500 font-normal">Already have an account? <span onClick={()=>navigate('/login')} className="cursor-pointer font-medium text-blue-500 hover:text-blue-700">Log In</span></span>
+          <span className="text-sm text-gray-500 font-normal">Need to create an account? <span onClick={()=>navigate('/sign-up')} className="cursor-pointer font-medium text-blue-500 hover:text-blue-700">Sign Up</span></span>
         </div>
       </div>
     </div>
-    <ModalError {...attributes} />
-    </>
   );
 };
-
 const EyeSlashFilledIcon = (props) => (
   <svg
     aria-hidden="true"
@@ -220,4 +153,4 @@ export const EyeFilledIcon = (props) => (
     />
   </svg>
 );
-export default SignUp;
+export default Login;
