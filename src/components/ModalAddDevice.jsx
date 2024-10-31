@@ -23,6 +23,8 @@ import config from "../configs/config";
 
 export const ModalAddDevice = ({deviceData, onAddDevice}) => {
 	const apiUrl = config.apiUrl;
+	const wssHost = (import.meta.env.VITE_WSS_URL).replace(/^wss:\/\//, '');
+	const wssUrl = `${import.meta.env.VITE_STAGE}/`;
 	const { data: tokenData , loading: tokenLoading , error: tokenError, refetch: tokenRefetch } = useFetchMemo(`${apiUrl}/deviceToken`);
 	const { postItem, success, error: deviceError, data } = usePost(`${apiUrl}/devices`);
 	const deviceToken = tokenData?.deviceToken || null;
@@ -61,7 +63,7 @@ export const ModalAddDevice = ({deviceData, onAddDevice}) => {
 	const stepsMapping = {
 		1: <Step1 />,
 		2: <Step2 isInvalid={isInvalid} deviceName={deviceName} setDeviceName={setDeviceName}/>,
-		3: <Step3 authKey={deviceToken || "Error Loading Token"}/>
+		3: <Step3 wssHost={wssHost} wssUrl={wssUrl} authKey={deviceToken || "Error Loading Token"}/>
 	}
 	const incrStep = () => {
 		if (modalState === 2 && (isInvalid || deviceName === "")) return;
@@ -139,7 +141,7 @@ const Step1 = () => (
 			<li><span className="font-medium">Prepare the Device: </span>If your device is not brand new, press the reset button to put it in reset mode. The device's light will blink continuously when it's ready.</li>
 			<li><span className="font-medium">Connect to WiFi: </span>The device will act as a temporary WiFi hotspot (web server). Connect to its WiFi network, named AirRemote.</li>
 			<li><span className="font-medium">Enter Device Credentials: </span>A setup page (captive portal) will open automatically. If it doesn't appear on Apple devices, open a browser and go to captive.apple.com.</li>
-			<li><span className="font-medium">Save Your Authentication Key: </span>During setup, you'll receive a unique authentication key. Make sure to copy it, as you'll need to enter it later.</li>
+			<li><span className="font-medium">Save Your Authentication Key & Endpoints: </span>During setup, you'll receive a unique authentication key. Make sure to copy it, as you'll need to enter it later.</li>
 		</ol>
 		</div>
 	</div>
@@ -161,11 +163,15 @@ const Step2 = ({isInvalid, deviceName, setDeviceName}) => (
 	</div>
 )
 
-const Step3 = ({authKey}) => (
+const Step3 = ({authKey, wssHost, wssUrl}) => (
 	<div className="-mt-1 -mb-1 max-w-lg">
-		<div className="flex mb-3">Copy the authentication key below and save it somewhere safe, as you'll need to provide it when setting up the device.</div>
+		<div className="flex mb-3">Copy the credentials below and save them somewhere safe, as you'll need to provide them when setting up the device.</div>
+		<div className="flex mb-1"><span className="font-medium">WSS Host</span></div>
+		<Snippet size="lg" symbol="" color="default" className="text-xs min-w-full">{wssHost}</Snippet>
+		<div className="flex mb-1"><span className="font-medium">WSS URL</span></div>
+		<Snippet size="lg" symbol="" color="default" className="text-xs">{wssUrl}</Snippet>
 		<div className="flex mb-1"><span className="font-medium">Authentication key</span></div>
-		<Snippet size="lg" symbol="" color="default" className="text-xs">{authKey}</Snippet>
+		<Snippet size="lg" symbol="" color="default" className="text-xs min-w-full">{authKey}</Snippet>
 		<div className="flex mt-3 mb-3">Follow the instructions previously mentioned to finish setting up the device</div>
 
 	</div>
