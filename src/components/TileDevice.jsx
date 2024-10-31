@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import {
 	useSortable
 } from "@dnd-kit/sortable";
 
 import { Grip } from "lucide-react";
 import { CSS } from '@dnd-kit/utilities';
-
+import { Tooltip } from "@nextui-org/react";
 import { EditModeContext } from '../contexts/EditModeContext';
 import { DraggingContext }  from '../contexts/DraggingContext';
 
@@ -17,14 +16,19 @@ import esp32Img from '../assets/imgs/microcontroller3.png'
 import Active from '../assets/icons/active.svg?react';
 import Inactive from '../assets/icons/inactive.svg?react';
 
-import { ChevronRight } from "lucide-react";
 export const TileDevice = ({id, item, isConnected, refetch}) => {
 	const apiUrl = config.apiUrl;
+	const UNDEFINED_MAC_ADDRESS = "FF:FF:FF:FF:FF:FF"
 	const { editMode } = useContext(EditModeContext);
 	const { dragging } = useContext(DraggingContext);
-	const navigate = useNavigate();
-	const location = useLocation();
-	const [deviceType, setDeviceType] = useState(item.category);
+	const [isOpenTooltip, setIsOpenTooltip] = useState(false)
+
+	useEffect(() => {
+		if (!isOpenTooltip) return;
+		setTimeout(() => {
+			setIsOpenTooltip(false);
+		}, 2000)
+	},[isOpenTooltip])
 
 	const {
 		attributes,
@@ -43,12 +47,12 @@ export const TileDevice = ({id, item, isConnected, refetch}) => {
 	}
 
 	const getRandomAnimationDelay = () => {
-		const delay = Math.random() * 0.133; // Delay between 0 and 2 seconds
+		const delay = Math.random() * 0.133;
 		return {animationDelay: `${delay}s`};
 	  };
 
 	const listenersOnState = editMode ? { ...listeners } : {};
-
+	
 	const IotImg = () => <div 
 							className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0 -ml-3"
 							style={{ backgroundImage: `url(${esp32Img})`,
@@ -62,6 +66,20 @@ export const TileDevice = ({id, item, isConnected, refetch}) => {
 			className={`relative bg-gray-100 rounded-lg border-gray-300 h-[10rem] select-none border-2 ${(editMode && !dragging) ? "animate-shake" : ""}`}
 			style={{...style, ...getRandomAnimationDelay()}} 
 		>
+			{
+				item?.macAddress === UNDEFINED_MAC_ADDRESS?
+					<Tooltip color={"danger"} content={"Connect this device to finish setup."} isOpen={isOpenTooltip}>
+						<div
+							onMouseEnter={() => setIsOpenTooltip(true)}
+							onMouseLeave={() => setIsOpenTooltip(false)}
+							onMouseDown={() => setIsOpenTooltip(!isOpenTooltip)} 
+							className="flex justify-center items-center absolute top-0 right-3 -translate-y-1/2 rounded-full bg-red-500 w-[25px] h-[25px]">
+							<span className="text-white font-normal font-poppins">!</span>
+						</div>
+					</Tooltip>
+				: null
+
+			}
 			<div className="flex flex-col w-full h-full overflow-hidden">
 				<div className="relative flex flex-col h-1/3 w-full items-start justify-start p-2">
 						
@@ -81,10 +99,16 @@ export const TileDevice = ({id, item, isConnected, refetch}) => {
 					<div className="flex flex-col w-full items-start justify-center  ">
 						<span className="text-sm font-semibold text-gray-800">{item.deviceName}</span>
 						<div className="flex flex-row ">
-							<span className="text-xs font-normal text-gray-600">{isConnected ? "Connected" : "Disconnected"}</span>
-							{isConnected
-								? <Active className="w-[10px] ml-[2px] mb-[2px]"/>
-								: <Inactive className="w-[10px] ml-[2px] mb-[2px]"/>
+							{isConnected ?
+								<>
+									<span className="text-xs font-normal text-gray-600">Connected</span>
+									<Active className="w-[10px] ml-[2px] mb-[2px]"/>
+								</>
+								:
+								<>
+									<span className="text-xs font-normal text-gray-600">Disconnected</span>
+									<Inactive className="w-[10px] ml-[2px] mb-[2px]"/>
+								</>
 							}
 						</div>
 						
@@ -94,11 +118,6 @@ export const TileDevice = ({id, item, isConnected, refetch}) => {
 				<div className="relative flex h-2/3 w-full items-end justify-end overflow-visible">
 
 					<IotImg/>
-					{/* <div className="flex h-full justify-end items-end">
-						<div className="flex flex-row justify-center items-center cursor-pointer rounded-full w-14 h-14 bg-gray-200 shadow-md shadow-gray-700 border-gray-300 border-1  bg-opacity-70 backdrop-filter backdrop-blur-2xl mr-2 mb-2">
-							<ChevronRight onClick={() => navigate(`${location.pathname}/${item.remoteName}`)} className="opacity-95" color={"#374151"} size={28}/>
-						</div>
-					</div> */}
 				</div>
 				
 			</div>
