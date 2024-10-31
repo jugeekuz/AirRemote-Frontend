@@ -109,7 +109,11 @@ export const ModalAddRemote = ({deviceData, onAddRemote}) => {
 			"macAddress": macAddress,
 			"buttons": []
 		}
-		postItem(payload);
+		postItem(payload)
+		.then(() => {
+			onAddRemote();
+			onClose();
+		});
 	}
 
 	return (

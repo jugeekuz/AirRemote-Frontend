@@ -54,9 +54,7 @@ export const AuthProvider = ({ children }) => {
                             headers: {
                               'Content-Type': 'application/json',
                             },
-                          })
-                          .catch((e) => console.log(e));
-                        
+                          })                        
                         
                         setToken(response.data.id_token);
                         

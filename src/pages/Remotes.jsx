@@ -39,20 +39,14 @@ const Remotes = () => {
       <TileGrid size={length}>
         { 
           data.map((item, index) => {
-            const device = deviceData ? deviceData.find((dev) => dev.macAddress == item.macAddress) : null
-            const isConnected = device ? (device.connectionId != null) : false
+            const device = deviceData ? deviceData.find((dev) => dev.macAddress == item.macAddress) : null;
+            const isConnected = !!device && !!device.connectionId;
             return <TileRemote isConnected={isConnected} key={index} id={index} item={item} refetch={refetch}></TileRemote>
           })
         }
       </TileGrid>
       </DraggingProvider> 
   )
-  const RgbImg = () => <div 
-							className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0"
-							style={{ backgroundImage: `url(${rgbStripImg})`,
-									backgroundSize: '91%',
-									backgroundPosition: 'bottom left'}}
-						></div>
   return (
     <>
     <div className="px-2 sm:px-0 w-full overflow-x-hidden overflow-y-scroll">

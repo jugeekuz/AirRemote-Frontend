@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import config from  "../configs/config";
 
 import useFetchMemo from "../hooks/useFetchMemo";
@@ -19,7 +19,7 @@ const Devices = () => {
   const apiUrl = config.apiUrl;
   
   const { data: deviceData, loading: deviceLoading, error: deviceError, refetch: deviceRefetch } = useFetchMemo(`${apiUrl}/devices`);
-
+  
   const attributes = useError("");
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const Devices = () => {
       <TileGrid size={length}>
         { 
           deviceData.map((device, index) => {
-            const isConnected = device ? (device.connectionId != null) : false
+            const isConnected = !!device && !!device.connectionId;
             return <TileDevice isConnected={isConnected} key={index} id={index} item={device} refetch={deviceRefetch}/>
           })
         }
