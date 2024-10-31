@@ -10,7 +10,8 @@ export default defineConfig({
     https: true
   },
   define: {
-    global: {}  
+    global: {},
+    'process.env': {}
   },
   plugins: [react(), 
     svgr({ 
