@@ -23,7 +23,11 @@ const Login = () => {
     })
     .catch((error) => error.response ? alert(error.response.data.message) : alert(error.message))
   }
-
+  const handleSubmit = (e) => {
+    e.preventDefault(); 
+    login();
+  };
+  
   return (
     <div className="flex w-full min-h-screen justify-center items-center">
       <div className="flex flex-col items-center justify-center min-w-[90%] sm:min-w-[70%] md:min-w-[60%] lg:min-w-[50%] xl:min-w-[30%] 2xl:min-w-[20%]">
@@ -38,38 +42,44 @@ const Login = () => {
 
         {/* First section */}
         <div className="flex-col w-full my-5">
-          <Input
-            isRequired
-            onChange={((e) => setEmail(e.target.value))}
-            type="email"
-            label="Email"
-            placeholder="Enter your email"
-            variant="bordered"
-            className="border-1 rounded-t-xl remove-child-border hover:border-gray-400 focus-within:border-gray-400"
-          />
-          
-          <Input
-            isRequired
-            onChange={((e) => setPassword(e.target.value))}
-            type={isVisible ? "text" : "password"}
-            label="Password"
-            placeholder="Enter your password"
-            variant="bordered"
-            className="border-1 border-t-0 rounded-b-xl remove-child-border hover:border-gray-400 hover:border-t-1 focus-within:border-t-1 focus-within:border-gray-400"
-            endContent={
-              <button className="focus:outline-none" type="button" onClick={() => setIsVisible(!isVisible)} aria-label="toggle password visibility">
-                {isVisible ? (
-                  <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                ) : (
-                  <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                )}
-              </button>
-            }
-          />
-          
-          <Button onClick={login} className="w-full mt-6 bg-gradient-to-tr from-blue-500 to-blue-700" color="primary">
-            Log In
-          </Button>
+          <form onSubmit={handleSubmit} className="flex-col w-full">
+            <Input
+              isRequired
+              onChange={((e) => setEmail(e.target.value))}
+              type="email"
+              label="Email"
+              placeholder="Enter your email"
+              variant="bordered"
+              className="border-1 rounded-t-xl remove-child-border hover:border-gray-400 focus-within:border-gray-400"
+            />
+            
+            <Input
+              isRequired
+              onChange={((e) => setPassword(e.target.value))}
+              type={isVisible ? "text" : "password"}
+              label="Password"
+              placeholder="Enter your password"
+              variant="bordered"
+              className="border-1 border-t-0 rounded-b-xl remove-child-border hover:border-gray-400 hover:border-t-1 focus-within:border-t-1 focus-within:border-gray-400"
+              endContent={
+                <button className="focus:outline-none" type="button" onClick={() => setIsVisible(!isVisible)} aria-label="toggle password visibility">
+                  {isVisible ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
+            />
+            
+            <Button
+              type="submit"
+              className="w-full mt-6 bg-gradient-to-tr from-blue-500 to-blue-700"
+              color="primary"
+            >
+              Log In
+            </Button>
+          </form>
         </div>
 
         {/* Social Logins */}

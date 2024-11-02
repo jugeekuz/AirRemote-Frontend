@@ -54,6 +54,11 @@ const SignUp = () => {
     .catch((error) => error.response ? alert(error.response.data.message) : alert(error.message))
 
   }
+  const handleSubmit = (e) => {
+    e.preventDefault(); 
+    signUp();
+  };
+  
   return (
     <>
     <div className="flex w-full min-h-screen justify-center items-center">
@@ -69,71 +74,77 @@ const SignUp = () => {
 
         {/* First section */}
         <div className="flex-col w-full my-5">
-          <Input
-            isRequired     
-            value={username}       
-            isInvalid={!isValidUser}
-            onValueChange={setUsername}
-            type="username"
-            label="Username"
-            placeholder="Enter your username"
-            variant="bordered"
-            className={` ${ !isValidUser? "border-2 !border-red-400": "border-1"} rounded-t-xl remove-child-border hover:border-gray-400 focus-within:border-gray-400`}
-          />
-          <Input
-            isRequired
-            value={email}       
-            isInvalid={!isValidEmail}
-            onValueChange={setEmail}
-            type="email"
-            label="Email"
-            placeholder="Enter your email"
-            variant="bordered"
-            className={`${ !isValidEmail? "border-2 !border-red-400": "border-1 border-t-0 "} remove-child-border hover:border-gray-400 hover:border-t-1 focus-within:border-t-1 focus-within:border-gray-400`}
-          />
-          <Input
-            isRequired
-            value={password}       
-            isInvalid={!isValidPass}
-            onValueChange={setPassword}
-            type={isVisible ? "text" : "password"}
-            label="Password"
-            placeholder="Enter your password"
-            variant="bordered"
-            className={`${ !isValidPass? "border-2 !border-red-400": "border-1  border-t-0"} remove-child-border hover:border-gray-400 hover:border-t-1 focus-within:border-t-1 focus-within:border-gray-400`}
-            endContent={
-              <button className="focus:outline-none" type="button" onClick={() => setIsVisible(!isVisible)} aria-label="toggle password visibility">
-                {isVisible ? (
-                  <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                ) : (
-                  <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                )}
-              </button>
-            }
-          />
-          <Input
-            isRequired
-            value={passwordConfirmation}       
-            isInvalid={!isValidPassConf}
-            onValueChange={setPasswordConfirmation}
-            type={isVisibleConf ? "text" : "password"}
-            label="Confirm password"
-            placeholder="Confirm your password"
-            variant="bordered"
-            className={`${ !isValidPassConf? "border-2 !border-red-400": "border-1 border-t-0 "} rounded-b-xl remove-child-border hover:border-gray-400 hover:border-t-1 focus-within:border-t-1 focus-within:border-gray-400`}
-            endContent={
-              <button className="focus:outline-none" type="button" onClick={() => setIsVisibleConf(!isVisibleConf)} aria-label="toggle password visibility">
-                {isVisibleConf ? (
-                  <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                ) : (
-                  <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                )}
-              </button>
-            }
-          />
-          <Button onClick={signUp} className="w-full mt-6 bg-gradient-to-tr from-blue-500 to-blue-700" color="primary">
-            Sign Up
-          </Button>
+          <form onSubmit={handleSubmit} className="flex-col w-full">
+            <Input
+              isRequired     
+              value={username}       
+              isInvalid={!isValidUser}
+              onValueChange={setUsername}
+              type="username"
+              label="Username"
+              placeholder="Enter your username"
+              variant="bordered"
+              className={` ${ !isValidUser? "border-2 !border-red-400": "border-1"} rounded-t-xl remove-child-border hover:border-gray-400 focus-within:border-gray-400`}
+            />
+            <Input
+              isRequired
+              value={email}       
+              isInvalid={!isValidEmail}
+              onValueChange={setEmail}
+              type="email"
+              label="Email"
+              placeholder="Enter your email"
+              variant="bordered"
+              className={`${ !isValidEmail? "border-2 !border-red-400": "border-1 border-t-0 "} remove-child-border hover:border-gray-400 hover:border-t-1 focus-within:border-t-1 focus-within:border-gray-400`}
+            />
+            <Input
+              isRequired
+              value={password}       
+              isInvalid={!isValidPass}
+              onValueChange={setPassword}
+              type={isVisible ? "text" : "password"}
+              label="Password"
+              placeholder="Enter your password"
+              variant="bordered"
+              className={`${ !isValidPass? "border-2 !border-red-400": "border-1  border-t-0"} remove-child-border hover:border-gray-400 hover:border-t-1 focus-within:border-t-1 focus-within:border-gray-400`}
+              endContent={
+                <button className="focus:outline-none" type="button" onClick={() => setIsVisible(!isVisible)} aria-label="toggle password visibility">
+                  {isVisible ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
+            />
+            <Input
+              isRequired
+              value={passwordConfirmation}       
+              isInvalid={!isValidPassConf}
+              onValueChange={setPasswordConfirmation}
+              type={isVisibleConf ? "text" : "password"}
+              label="Confirm password"
+              placeholder="Confirm your password"
+              variant="bordered"
+              className={`${ !isValidPassConf? "border-2 !border-red-400": "border-1 border-t-0 "} rounded-b-xl remove-child-border hover:border-gray-400 hover:border-t-1 focus-within:border-t-1 focus-within:border-gray-400`}
+              endContent={
+                <button className="focus:outline-none" type="button" onClick={() => setIsVisibleConf(!isVisibleConf)} aria-label="toggle password visibility">
+                  {isVisibleConf ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
+            />
+            <Button
+              type="submit"
+              className="w-full mt-6 bg-gradient-to-tr from-blue-500 to-blue-700"
+              color="primary"
+            >
+              Sign Up
+            </Button>
+          </form>
         </div>
 
         {/* Divider */}
