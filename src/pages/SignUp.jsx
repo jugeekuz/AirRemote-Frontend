@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Input, Button, Divider} from "@nextui-org/react";
+import {Input, Button, Divider, Spinner} from "@nextui-org/react";
 import Logo from '../assets/icons/airremote-logo.svg?react';
 import GoogleLogo from '../assets/icons/google-logo.svg?react';
 import GithubLogo from '../assets/icons/github-logo.svg?react';
@@ -12,6 +12,7 @@ const SignUp = () => {
   const attributes = useError("");
 
   const [username, setUsername] = useState('');
+  const [signupLoading, setSignupLoading] = useState(false);
   const [isValidUser, setIsValidUser] = useState(true);
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -49,9 +50,16 @@ const SignUp = () => {
 
   const signUp = () => {
     if (!validate()) return;
+    setSignupLoading(true);
     signup(username, email, password)
-    .then(() => navigate('/login'))
-    .catch((error) => error.response ? alert(error.response.data.message) : alert(error.message))
+    .then(() => {
+      setSignupLoading(false);
+      navigate('/login');
+    })
+    .catch((error) => {
+      setSignupLoading(false);
+      return error.response ? alert(error.response.data.message) : alert(error.message)
+    })
 
   }
   const handleSubmit = (e) => {
@@ -142,7 +150,7 @@ const SignUp = () => {
               className="w-full mt-6 bg-gradient-to-tr from-blue-500 to-blue-700"
               color="primary"
             >
-              Sign Up
+              {signupLoading ? <Spinner/> : "Sign Up"}
             </Button>
           </form>
         </div>

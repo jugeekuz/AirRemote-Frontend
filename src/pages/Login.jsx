@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import config from  "../configs/config";
-import {Input, Button, Divider} from "@nextui-org/react";
+import {Input, Button, Divider, Spinner} from "@nextui-org/react";
 import Logo from '../assets/icons/airremote-logo.svg?react';
 import GoogleLogo from '../assets/icons/google-logo.svg?react';
 import GithubLogo from '../assets/icons/github-logo.svg?react';
@@ -10,18 +10,23 @@ import { useAuth } from "../contexts/AuthContext";
 const Login = () => {
   const navigate = useNavigate();
   const { token, setToken } = useAuth();
+  const [loginLoading, setLoginLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isVisible, setIsVisible] = useState(false);
 
   const login = () => {
     if (email === '' || password === '') return;
-
+    setLoginLoading(true);
     authenticate(email, password)
     .then((res) => {
       setToken(res.data.id_token);
+      setLoginLoading(false);
     })
-    .catch((error) => error.response ? alert(error.response.data.message) : alert(error.message))
+    .catch((error) => {
+      setLoginLoading(false);
+      return error.response ? alert(error.response.data.message) : alert(error.message);
+    })
   }
   const handleSubmit = (e) => {
     e.preventDefault(); 
@@ -77,7 +82,7 @@ const Login = () => {
               className="w-full mt-6 bg-gradient-to-tr from-blue-500 to-blue-700"
               color="primary"
             >
-              Log In
+              {loginLoading ? <Spinner/> : "Log In"}
             </Button>
           </form>
         </div>
