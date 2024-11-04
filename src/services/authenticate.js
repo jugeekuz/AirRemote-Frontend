@@ -14,7 +14,7 @@ export const authenticate = async (email, password)=>{
                 'Content-Type': 'application/json',
             },
         });
-        
+        console.log(response)
         return response;
     } catch (error) {
         throw error;
@@ -40,7 +40,7 @@ export const logout = async () => {
 export const signup = async (username, email, password) => {
     const signupUrl = `${config.authUrl}/signup`
     const item = {
-        username: username,
+        nickname: username,
         email: email,
         password: password
     }
@@ -51,6 +51,22 @@ export const signup = async (username, email, password) => {
             }
         });
     
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const refresh = async () => {
+    const refreshUrl = `${config.authUrl}/refresh-token`;
+    try {
+        const response = await axios.post(refreshUrl, {}, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+              }
+        })
+        console.log(response)
         return response;
     } catch (error) {
         throw error;

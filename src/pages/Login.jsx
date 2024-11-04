@@ -56,6 +56,7 @@ const Login = () => {
               placeholder="Enter your email"
               variant="bordered"
               className="border-1 rounded-t-xl remove-child-border hover:border-gray-400 focus-within:border-gray-400"
+              autoComplete="email"
             />
             
             <Input
@@ -75,6 +76,7 @@ const Login = () => {
                   )}
                 </button>
               }
+              autoComplete="password"
             />
             
             <Button

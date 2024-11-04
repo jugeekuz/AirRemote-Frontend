@@ -1,16 +1,10 @@
 import React, {useEffect, useState} from "react";
 
-import { useLocation, Link } from 'react-router-dom';
 import {Tabs, Tab} from "@nextui-org/react"; 
-import { MoveRight, BluetoothSearching } from "lucide-react";
-import { Divider } from "@nextui-org/react";
 
 import config from "../configs/config";
 import ModalError from "../components/ModalError";
-import AutomationColor from '../assets/icons/automation-color.svg?react';
-import Esp from '../assets/icons/esp.svg?react';
-import Money from '../assets/icons/money.svg?react';
-
+import { useAuth } from "../contexts/AuthContext";
 import useError from "../hooks/useError";
 import useFetchMemo from "../hooks/useFetchMemo";
 import { DraggingProvider } from "../contexts/DraggingContext";
@@ -22,6 +16,7 @@ import TileDevice from "../components/TileDevice";
 import TileAutomation from "../components/TileAutomation";
 import TileRemote from "../components/TileRemote";
 const Dashboard = () => {
+    const { username } = useAuth();
     const apiUrl = config.apiUrl;
     const attributes = useError("");
     const { data: remoteData, loading: remoteLoading, error: remoteError, refetch: remoteRefetch } = useFetchMemo(`${apiUrl}/remotes`);
@@ -125,7 +120,7 @@ const Dashboard = () => {
         <div className="px-2 sm:px-0 w-full overflow-x-hidden overflow-y-scroll">
             <TopToolbar/>
             <div className="flex flex-col w-full h-16 items-start justify-end px-3 pb-1  mt-1">
-                <span className="text-2xl font-semibold font-roboto">Hello, Jovana 👋</span>
+                <span className="text-2xl font-semibold font-roboto">Hello, {username.current} 👋</span>
                 <span className="text-xs font-normal text-gray-600 font-poppins ml-[1px]">Welcome to <span className="font-bold text-teal-500">AirRemote</span></span>
             </div>
 
@@ -180,7 +175,7 @@ const Dashboard = () => {
 
             {/* Items */}
             <div className="">
-              <Tabs key={"default"} color={"default"} aria-label="Tabs colors" radius="sm" variant="solid" className="ml-1 mt-2 -mb-2">
+              <Tabs key={"default"} color={"default"} aria-label="Tabs colors" radius="sm" variant="solid" className="ml-1 mt-2 -mb-1 border-2 rounded-xl">
                   <Tab key="remotes" title="Remotes">
                   {
                       remoteData && remoteData?.length > 0?
