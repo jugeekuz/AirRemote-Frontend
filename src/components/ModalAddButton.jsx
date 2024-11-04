@@ -120,7 +120,7 @@ export const ModalAddButton = ({onAddButton}) => {
 
 	return (
 		<>
-		<div onClick={onOpen} className=""> <CircleFadingPlus size={19} strokeWidth={"2px"} color="black" className="cursor-pointer"/></div>
+		<div onClick={onOpen} className=""> <CircleFadingPlus size={18} strokeWidth={"2px"} color="black" className="cursor-pointer"/></div>
 		
 		
 		{/* Add Button Modal */}

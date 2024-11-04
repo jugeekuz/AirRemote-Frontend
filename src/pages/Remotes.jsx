@@ -54,8 +54,8 @@ const Remotes = () => {
     <EditModeProvider>
       
     <div className="flex justify-between items-center flex-row mt-6 mb-3 ml-2">
-      <div className="flex items-center">
-        <span className="font-sans font-medium text-xl">
+      <div className="flex items-center justify-center">
+        <span className="font-sans font-medium text-xl mb-[1px]">
           Your remotes
         </span>
         <div className="flex justify-center items-center ml-2 rounded-lg w-6 h-6 bg-green-600">
