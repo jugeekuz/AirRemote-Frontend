@@ -124,8 +124,8 @@ export const TileRemote = ({id, item, isConnected, refetch}) => {
 			className={`relative bg-gray-100 bg-opacity-60 rounded-lg border-gray-300 h-[10rem] select-none border-2 ${(editMode && !dragging) ? "animate-shake" : ""}`}
 			style={{...style, ...getRandomAnimationDelay()}} 
 		>
-			<div className="flex flex-col w-full h-full overflow-hidden">
-				<div className="relative flex flex-col h-1/3 w-full items-start justify-start p-2">
+			<div className="flex flex-col w-full h-full justify-between overflow-hidden">
+				<div className="relative flex flex-col min-h-[33%] w-full items-start justify-start p-2 z-10">
 						
 					<div 
 						className={`absolute top-2 right-2 z-10 flex flex-row justify-center items-center 

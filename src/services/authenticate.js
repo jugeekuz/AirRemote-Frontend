@@ -14,7 +14,6 @@ export const authenticate = async (email, password)=>{
                 'Content-Type': 'application/json',
             },
         });
-        console.log(response)
         return response;
     } catch (error) {
         throw error;
@@ -66,7 +65,6 @@ export const refresh = async () => {
                 'Content-Type': 'application/json',
               }
         })
-        console.log(response)
         return response;
     } catch (error) {
         throw error;
