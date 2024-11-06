@@ -58,63 +58,35 @@ export const TileRemote = ({id, item, isConnected, refetch}) => {
 
 	const listenersOnState = editMode ? { ...listeners } : {};
 
-	const RgbImg = () => <div 
-							className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0"
-							style={{ backgroundImage: `url(${rgbStripImg})`,
-									backgroundSize: 'auto 100%',
-									backgroundPosition: 'bottom left'}}
-						></div>
-
-	const DehumidifierImg = () => <div 
-									className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0 ml-2"
-									style={{ backgroundImage: `url(${dehumidifierImg})`,
-											backgroundSize: 'auto 100%',
-											backgroundPosition: 'bottom left'}}
-								></div>
-
-	const TvImg = () => <div 
-							className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0"
-							style={{ backgroundImage: `url(${tvImg})`,
-									backgroundSize: 'auto 100%',
-									backgroundPosition: 'bottom left'}}
-						></div>
 
 	const AirConditionerImg = () => <div 
-										className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0  -ml-10 "
+										className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0 "
 										style={{ backgroundImage: `url(${airconditionerImg})`,
 												backgroundSize: 'auto 100%',
 												backgroundPosition: 'bottom left'}}
 									></div>
 	
-	const HeaterImg = () => <div 
-								className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0"
-								style={{ backgroundImage: `url(${heaterImg})`,
-										backgroundSize: 'auto 100%',
-										backgroundPosition: 'bottom left'}}
-							></div>		
 
-	const SpeakerImg = () => <div 
-								className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0 -ml-3"
-								style={{ backgroundImage: `url(${speakerImg})`,
-										backgroundSize: 'auto 100%',
-										backgroundPosition: 'bottom left'}}
-							></div>
 
-	const UniDeviceImg = () => <div 
-									className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0 "
-									style={{ backgroundImage: `url(${uniDeviceImg})`,
-											backgroundSize: 'auto 100%',
-											backgroundPosition: 'bottom left'}}
-								></div>
-			
+	const TileImg = ({className, img}) => {
+		return (
+			<div className="w-full h-full flex justify-start items-center overflow-hidden z-0">
+				<img
+				src={img}
+				alt="Speaker"
+				className={`h-full max-w-full object-contain object-left-bottom ${className}`}
+				/>
+			</div>
+		)
+	}
 	const mapping = {
-		"Air Conditioner": <AirConditionerImg/>,
-		"Dehumidifier": <DehumidifierImg/>,
-		"Smart TV": <TvImg/>,
-		"Heater": <HeaterImg/>,
-		"Audio System": <SpeakerImg/>,
-		"RGB Lights": <RgbImg/>,
-		"Generic Device": <UniDeviceImg/>
+		"Air Conditioner": <TileImg img={airconditionerImg}/>,
+		"Dehumidifier": <TileImg img={dehumidifierImg} className={"-ml-2"}/>,
+		"Smart TV": <TileImg img={tvImg}/>,
+		"Heater": <TileImg img={heaterImg}/>,
+		"Audio System": <TileImg img={speakerImg} className="-ml-1"/>,
+		"RGB Lights": <TileImg img={rgbStripImg}/>,
+		"Generic Device": <TileImg img={uniDeviceImg}/>
 	}
 
 	return (
@@ -153,11 +125,11 @@ export const TileRemote = ({id, item, isConnected, refetch}) => {
 					</div>
 					
 				</div>
-				<div className="relative flex h-2/3 w-full items-end justify-end overflow-visible">
+				<div className="relative flex flex-col h-2/3 w-full items-end justify-end overflow-visible">
 					
 					{mapping[deviceType]}
 					
-					<div className="flex h-full justify-end items-end">
+					<div className="absolute flex h-full justify-end items-end">
 						<div className="flex flex-row justify-center items-center cursor-pointer rounded-full w-14 h-14 bg-gray-200 shadow-md shadow-gray-700 border-gray-300 border-1  bg-opacity-70 backdrop-filter backdrop-blur-2xl mr-2 mb-2">
 							<ChevronRight onClick={() => navigate(`/remotes/${item.remoteName}`)} className="opacity-95" color={"#374151"} size={28}/>
 						</div>

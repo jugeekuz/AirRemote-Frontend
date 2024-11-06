@@ -59,6 +59,18 @@ export const TileDevice = ({id, item, isConnected, refetch}) => {
 									backgroundSize: 'auto 100%',
 									backgroundPosition: 'bottom left'}}
 						></div>
+
+	const IotImg3 = ({className, img}) => {
+		return (
+			<div className="w-full h-full flex justify-center items-end overflow-hidden z-0">
+				<img
+				src={esp32Img}
+				alt="Speaker"
+				className={`h-full max-w-full object-contain object-bottom -ml-3`}
+				/>
+			</div>
+		)
+	}
 	return (
 		<>
 		<div 
@@ -81,7 +93,7 @@ export const TileDevice = ({id, item, isConnected, refetch}) => {
 
 			}
 			<div className="flex flex-col w-full h-full overflow-hidden">
-				<div className="relative flex flex-col h-1/3 w-full items-start justify-start p-2">
+				<div className="relative flex flex-col h-1/3 w-full items-start justify-start p-2 z-10">
 						
 					<div 
 						className={`absolute top-2 right-2 z-10 flex flex-row justify-center items-center 
