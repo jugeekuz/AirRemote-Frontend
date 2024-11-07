@@ -164,7 +164,8 @@ const Step2 = ({isInvalid, deviceName, setDeviceName}) => (
 )
 
 const Step3 = ({authKey, wssHost, wssUrl}) => {
-	const [wssFirst, wssSecond] = wssHost.split('.com');
+	const [wssFirst, _] = wssHost.split('.com');
+	console.log(wssFirst)
 	return(
 	<div className="-mt-1 -mb-1 max-w-lg">
 		<div className="flex mb-3">Copy the credentials below and save them somewhere safe, as you'll need to provide them when setting up the device.</div>

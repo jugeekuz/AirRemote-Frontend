@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 
 import { useParams } from "react-router-dom"
 
@@ -7,9 +7,9 @@ import config from "../configs/config";
 import useFetchMemo from "../hooks/useFetchMemo";
 import useError from "../hooks/useError";
 
-import { EditModeProvider } from "../contexts/EditModeContext";
+import { EditModeProvider, EditModeContext } from "../contexts/EditModeContext";
 import { DraggingProvider } from "../contexts/DraggingContext";
-
+import api from "../api/api";
 import TopToolbar from '../components/TopToolbar';
 import InfoBar from '../components/InfoBar';
 import Toolbar from "../components/Toolbar";
@@ -25,11 +25,14 @@ const RemoteButtons = () => {
   const [isConnected, setIsConnected] = useState(false);
   const { data: remoteData, loading, error: remoteError, refetch: remoteRefetch } = useFetchMemo(`${apiUrl}/remotes/${remoteName}`);
   const { data: deviceData, loading: deviceLoading, error: deviceError, refetch: deviceRefetch } = useFetchMemo(macAddress ? `${apiUrl}/devices/${macAddress}` : null);
-
+  const [itemOrder, setItemOrder] = useState(null); // This represents which item is currently in the i-th position. If order[i] = 3 then the (originally) 4th item is in the (i+1)-th position
+  const originalOrder = useRef([]);
+  
 
   useEffect(() => {
 		if (!remoteData?.macAddress) return;
     setMacAddress(remoteData.macAddress);
+    originalOrder.current = Array.from({ length: remoteData.buttons.length }, (_, i) => i);
     deviceRefetch();
   }, [remoteData]);
 
@@ -48,15 +51,40 @@ const RemoteButtons = () => {
     attributes.setError(deviceError);
   },[deviceError])
 
-  const Grid = ({ length, buttons, remoteName }) => (
-    <DraggingProvider>
-      <TileGrid size={length}>
+  const Grid = ({ length, itemOrder, buttons, remoteName }) => {
+    const { editMode } = useContext(EditModeContext);
+
+    useEffect(() => {
+      if (editMode) return;
+      if (!itemOrder) return;
+      if(originalOrder.current.length == 0 || itemOrder?.length == 0) return;
+      const orderChanged = !(originalOrder.current.every((element, index) => element === itemOrder[index]));
+      if (!orderChanged) return;
+
+      const response = api({
+        method: "POST",
+        url: `${apiUrl}/remotes/${remoteName}/buttons/sort`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: {"newOrder": itemOrder},
+      });
+
+      response
+      .catch((error => attributes.setError(error.message)));
+    }, [editMode])
+
+    const onOrderChange = (newItemOrder) => {
+      setItemOrder(newItemOrder)
+    }
+    return <DraggingProvider>
+      <TileGrid size={length} itemOrder={itemOrder} onOrderChange={onOrderChange}>
         { buttons.map((item, index) => 
             <TileRemoteButton key={index} id={index} item={item} state={item?.buttonState === "YES"} remoteName={remoteName} refetch={remoteRefetch}/>
           )}
       </TileGrid> 
     </DraggingProvider>
-  )
+  }
   
 
   return (
@@ -98,7 +126,7 @@ const RemoteButtons = () => {
             {/* Buttons Grid */}
             {remoteData && remoteData?.buttons.length !== 0
               ?
-                <Grid length={remoteData.buttons.length} buttons={remoteData.buttons} remoteName={remoteName}/>
+                <Grid length={remoteData.buttons.length} buttons={remoteData.buttons} remoteName={remoteName} itemOrder={itemOrder} />
               : null
             }
           </EditModeProvider>

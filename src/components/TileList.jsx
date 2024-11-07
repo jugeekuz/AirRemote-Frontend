@@ -27,7 +27,7 @@ export const TileList = (props) => {
 	const [activeId, setActiveId] = useState(null);
 	const { setDragging } = useContext(DraggingContext);
 	const [childrenOrder, setChildrenOrder] = useState(
-		props?.itemOrder ||
+		props.itemOrder ||
         Array.from({ length: React.Children.count(props.children) }, (_, index) => index)
     );
 
