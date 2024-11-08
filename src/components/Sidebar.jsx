@@ -8,7 +8,7 @@ export const Sidebar = (props) => {
 
 	return (
 		// w-16 mr-3 z-10
-		<div className="hidden sm:block tems-center min-w-16 mr-2 z-10 h-screen">
+		<div className="hidden sm:block tems-center min-w-16 mr-2 z-[100] h-screen">
 			<aside className={`fixed h-screen ${expanded ? "w-64" : "w-16"} transition-width`}>
 				<nav className="h-full w-full flex flex-col bg-gradient-to-l from-white to-gray-50 border-r shadow-sm">
 					<div className="border-b p-4 flex justify-between items-center">

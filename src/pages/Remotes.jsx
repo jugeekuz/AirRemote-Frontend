@@ -12,7 +12,7 @@ import Toolbar from "../components/Toolbar";
 import TopToolbar from "../components/TopToolbar";
 import ModalError from "../components/ModalError";
 import ModalAddRemote from "../components/ModalAddRemote";
-
+import EmptyTiles from "../components/EmptyTiles";
 import { TileGrid } from "../components/TileGrid";
 import { TileRemote } from "../components/TileRemote";
 import NoticeBox from "../components/NoticeBox";
@@ -134,7 +134,7 @@ const Remotes = () => {
     
     {data && data?.length > 0 ?       
       <Grid data={data} deviceData={deviceData} length={data.length} itemOrder={itemOrder} />
-      : null
+      : <EmptyTiles text={"No remotes available"}/>
     }
     </EditModeProvider>
     </div>

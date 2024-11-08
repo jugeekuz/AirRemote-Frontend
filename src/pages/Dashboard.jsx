@@ -15,6 +15,7 @@ import TileList from "../components/TileList";
 import TileDevice from "../components/TileDevice";
 import TileAutomation from "../components/TileAutomation";
 import TileRemote from "../components/TileRemote";
+import EmptyTabs from "../components/EmptyTabs";
 const Dashboard = () => {
     const { username } = useAuth();
     const apiUrl = config.apiUrl;
@@ -179,22 +180,22 @@ const Dashboard = () => {
                   <Tab key="remotes" title="Remotes">
                   {
                       remoteData && remoteData?.length > 0?
-                          <RemotesGrid remoteData={remoteData} length={remoteData.length} deviceData={deviceData}/>            
-                      : null
+                        <RemotesGrid remoteData={remoteData} length={remoteData.length} deviceData={deviceData}/>            
+                      : <EmptyTabs text={"No remotes available"} link={"/remotes"} textLink={"Go to remotes"}/>
                   }
                   </Tab>
                   <Tab key="automations" title="Automations">
                       {
                           automationData && automationData?.length > 0 ?
-                              <AutomationList automationData={automationData} length={automationData.length}/>
-                          : null
+                            <AutomationList automationData={automationData} length={automationData.length}/>
+                          : <EmptyTabs text={"No automations available"} link={"/automations"} textLink={"Go to automations"}/>
                       }
                   </Tab>
                   <Tab key="devices" title="Devices">
                       {
                           deviceData && deviceData?.length > 0 ?
-                              <DevicesGrid deviceData={deviceData} length={deviceData.length}/>
-                          : null
+                            <DevicesGrid deviceData={deviceData} length={deviceData.length}/>
+                          : <EmptyTabs text={"No devices available"} link={"/devices"} textLink={"Go to devices"}/>
                       }
                   </Tab>
               </Tabs>

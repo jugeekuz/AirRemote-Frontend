@@ -8,7 +8,7 @@ import { EditModeProvider, EditModeContext } from "../contexts/EditModeContext";
 import { DraggingProvider } from "../contexts/DraggingContext";
 
 import TopToolbar from '../components/TopToolbar';
-import InfoBar from '../components/InfoBar';
+import EmptyTiles from "../components/EmptyTiles";
 import Toolbar from "../components/Toolbar";
 import ModalAddDevice from "../components/ModalAddDevice";
 import { TileGrid } from '../components/TileGrid';
@@ -129,7 +129,7 @@ const Devices = () => {
       </NoticeBox>
       {deviceData && deviceData?.length > 0? 
         <Grid length={deviceData.length} deviceData={deviceData} itemOrder={itemOrder} />
-        : null
+        : <EmptyTiles text={"No devices available"}/>
       }
       </EditModeProvider>
       </div>

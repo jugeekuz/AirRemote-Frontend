@@ -10,6 +10,8 @@ import useError from "../hooks/useError";
 import { EditModeProvider, EditModeContext } from "../contexts/EditModeContext";
 import { DraggingProvider } from "../contexts/DraggingContext";
 import api from "../api/api";
+
+import EmptyTiles from "../components/EmptyTiles";
 import TopToolbar from '../components/TopToolbar';
 import InfoBar from '../components/InfoBar';
 import Toolbar from "../components/Toolbar";
@@ -17,6 +19,7 @@ import ModalAddButton from "../components/ModalAddButton";
 import { TileGrid } from '../components/TileGrid';
 import { TileRemoteButton } from '../components/TileRemoteButton';
 import ModalError from "../components/ModalError";
+
 const RemoteButtons = () => {
 	const apiUrl = config.apiUrl;
 	const { remoteName } = useParams();
@@ -127,7 +130,7 @@ const RemoteButtons = () => {
             {remoteData && remoteData?.buttons.length !== 0
               ?
                 <Grid length={remoteData.buttons.length} buttons={remoteData.buttons} remoteName={remoteName} itemOrder={itemOrder} />
-              : null
+              : <EmptyTiles text={"No remote buttons available"}/>
             }
           </EditModeProvider>
         </div>

@@ -14,6 +14,7 @@ import NoticeBox from "../components/NoticeBox";
 import ModalAddAutomation from "../components/ModalAddAutomation";
 import { TileList } from "../components/TileList";
 import { TileAutomation } from "../components/TileAutomation";
+import EmptyTiles from "../components/EmptyTiles";
 const Automations = () => {
 	const apiUrl = config.apiUrl;
 	const attributes = useError("");
@@ -146,7 +147,7 @@ const Automations = () => {
 			
 			{data && data?.length > 0 ? 
 				<Grid length={data.length} data={data} itemOrder={itemOrder}/>
-			: null
+			: <EmptyTiles text={"No automations available"}/>
 			}
 		</EditModeProvider>
 	</div>
