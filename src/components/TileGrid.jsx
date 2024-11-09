@@ -23,12 +23,12 @@ import { CSS } from '@dnd-kit/utilities';
 
 import { DraggingContext } from "../contexts/DraggingContext";
 
-export const TileGrid = (props) => {
+export const TileGrid = ({itemOrder, children, onOrderChange, size}) => {
 	const [activeId, setActiveId] = useState(null);
 	const { setDragging } = useContext(DraggingContext);
 	const [childrenOrder, setChildrenOrder] = useState(
-		props.itemOrder ||
-        Array.from({ length: React.Children.count(props.children) }, (_, index) => index)
+		itemOrder ||
+        Array.from({ length: React.Children.count(children) }, (_, index) => index)
     );
 
 	const sensors = useSensors(
@@ -49,8 +49,8 @@ export const TileGrid = (props) => {
 	  );
 	
 	useEffect(() => {
-		if (!props?.onOrderChange) return;
-		props.onOrderChange(childrenOrder);
+		if (!onOrderChange) return;
+		onOrderChange(childrenOrder);
 	},[childrenOrder])
 
 	const handleDragStart = (event) => {
@@ -87,9 +87,9 @@ export const TileGrid = (props) => {
 			2xl:grid-cols-15
 			3xl:grid-cols-17">
 				<SortableContext items={childrenOrder.map(id => `${id}`)} strategy={rectSortingStrategy}>
-					{props.size && childrenOrder.map((orderIndex) => props.children[orderIndex])}
+					{size && childrenOrder.map((orderIndex) => children[orderIndex])}
 					<DragOverlay>
-						{activeId ? <div className="shadow-[0px_2px_5px_rgba(0,0,0,0.4)] shadow-gray-500 scale-105 rounded-lg">{props.children[activeId]}</div> : null}
+						{activeId ? <div className="shadow-[0px_2px_5px_rgba(0,0,0,0.4)] shadow-gray-500 scale-105 rounded-lg">{children[activeId]}</div> : null}
 					</DragOverlay>
 				</SortableContext>
 			</div>
