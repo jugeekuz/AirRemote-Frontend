@@ -79,13 +79,14 @@ const Navigation = ({children}) => (
 )
 
 const PrivateRoute = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, refreshLoading } = useAuth();
 
-  return isAuthenticated ? <Outlet/> : <Navigate to="/login" />;
+  return isAuthenticated || refreshLoading  ? <Outlet/> : <Navigate to="/login" />;
 };
 
 const PublicRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
+
   return !isAuthenticated ? <Outlet/> : <Navigate to="/" />;
 };
 

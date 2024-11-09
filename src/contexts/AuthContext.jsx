@@ -17,6 +17,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
     const authUrl = config.authUrl;
     const [token, setToken] = useState();
+    const [refreshLoading, setRefreshLoading] = useState(true);
     const isAuthenticated = !!token;
     const username = useRef("User");
     const decodeIdToken = (token) => {
@@ -50,6 +51,7 @@ export const AuthProvider = ({ children }) => {
             setToken(res.data.id_token);
         })
         .catch((res) => setToken(null))
+        .finally(() => setRefreshLoading(false))
     },[])
 
     useLayoutEffect(() => {
@@ -101,7 +103,7 @@ export const AuthProvider = ({ children }) => {
     }, [])
     
     return (
-        <AuthContext.Provider value={{ username , token, setToken, isAuthenticated }}>
+        <AuthContext.Provider value={{ username , token, setToken, isAuthenticated, refreshLoading }}>
             {children}
         </AuthContext.Provider>
     );
