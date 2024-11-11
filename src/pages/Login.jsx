@@ -7,6 +7,7 @@ import GithubLogo from '../assets/icons/github-logo.svg?react';
 import { useNavigate } from "react-router-dom";
 import { authenticate } from "../services/authenticate";
 import { useAuth } from "../contexts/AuthContext";
+import initiateOAuthFlow from "../services/oauth2";
 const Login = () => {
   const navigate = useNavigate();
   const { token, setToken } = useAuth();
@@ -100,10 +101,10 @@ const Login = () => {
         </div>
 
         <div className="flex flex-col w-full">
-          <Button className="w-full bg-transparent border-2 border-gray-200 text-gray-600" color="primary">
+          <Button className="w-full bg-transparent border-2 border-gray-200 text-gray-600" color="primary" onClick={() => initiateOAuthFlow("Google")}>
             <GoogleLogo className="w-5"/> Continue with Google
           </Button>
-          <Button className="w-full bg-transparent border-2 border-gray-200 text-gray-600 mt-1" color="primary">
+          <Button className="w-full bg-transparent border-2 border-gray-200 text-gray-600 mt-1" color="primary" onClick={() => initiateOAuthFlow("Google")}>
             <GithubLogo className="w-5 h-5"/> Continue with Github
           </Button>
         </div>

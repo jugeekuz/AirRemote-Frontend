@@ -14,6 +14,7 @@ import RemoteButtons from './pages/RemoteButtons';
 import Dashboard from './pages/Dashboard';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
+import OAuth2Callback from './pages/OAuth2Callback';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 function App() {
@@ -51,6 +52,10 @@ function App() {
             </Route>
             <Route element={<PublicRoute />}>
               <Route path="/login" element={<Login />} />
+            </Route>
+
+            <Route element={<PublicRoute/>}>
+              <Route path="/oauth2/callback" element={<OAuth2Callback/>}/>
             </Route>
 
           </Routes>
