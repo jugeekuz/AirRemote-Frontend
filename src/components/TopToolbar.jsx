@@ -7,22 +7,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { logout } from "../services/authenticate";
 import { useAuth } from "../contexts/AuthContext";
 import logoImg from '../assets/imgs/logo.png'
-
+import ModalAddUser from "./ModalAddUser";
 const TopToolbar = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { setToken } = useAuth();
 	const isNested = location.pathname.split('/').filter(Boolean).length > 1;
-
-	const dropdownItems = [
-	{
-		key: "invite",
-		label: "Invite a friend"
-	},
-	{
-		key: "logout",
-		label: "Logout"
-	}]
+	const [toggleOpen, setToggleOpen] = useState(false);
 	return (
 		<div className="flex justify-between items-center h-16 w-full p-3">
 			{ isNested?
@@ -38,7 +29,6 @@ const TopToolbar = () => {
 				{/* <div className="flex w-8 h-8 items-center justify-center mx-2 rounded-full ">
 					<Settings size={20}/>
 				</div> */}
-				
 				<Dropdown>
 					<DropdownTrigger>
 						<Button 
@@ -47,13 +37,15 @@ const TopToolbar = () => {
 						>
 							<UserLogo className="w-8 h-8"/>
 						</Button>
-						{/* <Avatar isBordered radius="sm" showFallback src='https://images.unsplash.com/broken' className="w-8 h-8" /> */}
-						{/* <UserLogo className="w-8 h-8"/> */}
+						
 					</DropdownTrigger>
 					<DropdownMenu aria-label="Dynamic Actions">
 						<DropdownItem
 							key="invite"
 							startContent={<UserPlus size={18}/>}
+							onClick={() => {
+								setToggleOpen(!toggleOpen);
+							}}
 						>
 							Invite a friend
 						</DropdownItem>
@@ -72,6 +64,7 @@ const TopToolbar = () => {
 						
 					</DropdownMenu>
 				</Dropdown>
+				<ModalAddUser toggleOpen={toggleOpen}/>
 			</div>
 		</div>
 	)	

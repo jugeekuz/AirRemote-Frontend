@@ -7,11 +7,10 @@ export const initiateOAuthFlow = (identity_provider) => {
         response_type: 'code',
         client_id: config.appClientId,
         redirect_uri: config.redirectUri,
-        state,
+        state: state,
         identity_provider: identity_provider,
         scope: 'profile email openid',
     });
-
     window.location.href = `${config.cognitoDomain}/oauth2/authorize?${authorizeParams.toString()}`;
 }
 
