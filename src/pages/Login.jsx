@@ -3,7 +3,7 @@ import config from  "../configs/config";
 import {Input, Button, Divider, Spinner} from "@nextui-org/react";
 import Logo from '../assets/icons/airremote-logo.svg?react';
 import GoogleLogo from '../assets/icons/google-logo.svg?react';
-import GithubLogo from '../assets/icons/github-logo.svg?react';
+import FacebookLogo from '../assets/icons/facebook-logo.svg?react';
 import { useNavigate } from "react-router-dom";
 import { authenticate } from "../services/authenticate";
 import { useAuth } from "../contexts/AuthContext";
@@ -104,9 +104,9 @@ const Login = () => {
           <Button className="w-full bg-transparent border-2 border-gray-200 text-gray-600" color="primary" onClick={() => initiateOAuthFlow("Google")}>
             <GoogleLogo className="w-5"/> Continue with Google
           </Button>
-          <Button className="w-full bg-transparent border-2 border-gray-200 text-gray-600 mt-1" color="primary" onClick={() => initiateOAuthFlow("Google")}>
-            <GithubLogo className="w-5 h-5"/> Continue with Github
-          </Button>
+          {/* <Button className="w-full bg-transparent border-2 border-gray-200 text-gray-600 mt-1" color="primary" onClick={() => initiateOAuthFlow("Facebook")}>
+            <FacebookLogo className="w-8 -mr-1"/>Continue with Facebook
+          </Button> */}
         </div>
 
         <div className="mt-2">

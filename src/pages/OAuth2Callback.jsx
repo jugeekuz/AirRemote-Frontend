@@ -1,55 +1,66 @@
-import React, {useEffect} from 'react'
-import { useNavigate } from 'react-router-dom'
-
-import { useAuth } from '../contexts/AuthContext'
-import config from '../configs/config'
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Spinner } from '@nextui-org/react';
+import { useAuth } from '../contexts/AuthContext';
+import config from '../configs/config';
+import axios from 'axios';
 
 const OAuth2Callback = () => {
     const navigate = useNavigate();
-    const {token, setToken} = useAuth();
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const data = {
-            'code': urlParams.get('code'),
-            'state': urlParams.get('state')
-        }
+    const { token, setToken } = useAuth();
 
-        if (!data.code || !data.state) {
-            alert('Authorization code not found!');
-            return;
-        }
-        try {
-            const response = fetch(`${config.authUrl}/oauth2/token`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-    
-            const data = response.json();
-            
-            if (!data?.idToken) {
-                alert('Error while receiving credentials.');
+    useEffect(() => {
+        const fetchToken = async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
+
+            if (!code || !state) {
+                alert('Authorization code not found!');
                 navigate('/');
                 return;
             }
 
-            setToken(data.idToken);
-        } catch (error) {
-            alert('Error exchanging authorization code for tokens.');
-            console.error(error);
-        }
-    },[])
+            try {
+                const tokenUrl = `${config.authUrl}/oauth2/token`;
+                const response = await axios.post(tokenUrl, { code, state }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = response.data;
+
+                if (!data?.id_token) {
+                    const errorMessage = data?.message || 'Error while receiving credentials.';
+                    alert(errorMessage);
+                    navigate('/');
+                    return;
+                }
+
+                setToken(data.id_token);
+            } catch (error) {
+                const errorMessage = error.response?.data?.message || 'An error occurred while fetching the token.';
+                console.error(error);
+                alert(errorMessage);
+                navigate('/');
+            }
+        };
+
+        fetchToken();
+    }, [navigate, setToken]);
 
     useEffect(() => {
-        if (!token) return;
-        navigate('/');
-    },[token])
+        if (token) {
+            navigate('/');
+        }
+    }, [token, navigate]);
 
     return (
-        <div></div>
-    )
-}
+        <div className='flex items-center justify-center w-full h-full'>
+            <Spinner size="lg" color='primary' />
+        </div>
+    );
+};
 
-export default OAuth2Callback
+export default OAuth2Callback;

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Input, Button, Divider, Spinner} from "@nextui-org/react";
 import Logo from '../assets/icons/airremote-logo.svg?react';
 import GoogleLogo from '../assets/icons/google-logo.svg?react';
-import GithubLogo from '../assets/icons/github-logo.svg?react';
+import FacebookLogo from '../assets/icons/facebook-logo.svg?react';
 import { useNavigate } from "react-router-dom";
 import useError from "../hooks/useError";
 import ModalError from "../components/ModalError";
@@ -81,7 +81,7 @@ const SignUp = () => {
         </div>
 
         {/* First section */}
-        <div className="flex-col w-full my-5">
+        <div className="flex-col w-full mt-5">
           <form onSubmit={handleSubmit} className="flex-col w-full">
             <Input
               isRequired     
@@ -155,8 +155,7 @@ const SignUp = () => {
           </form>
         </div>
 
-        {/* Divider */}
-        <div className="flex flex-row w-full justify-between items-center mb-5">
+        {/* <div className="flex flex-row w-full justify-between items-center mb-5">
           <Divider className="max-w-[40%]"/>
           <span className="text-sm text-gray-500">
             OR
@@ -164,15 +163,14 @@ const SignUp = () => {
           <Divider className="max-w-[40%]"/>
         </div>
 
-        {/* Social Logins */}
         <div className="flex flex-col w-full">
           <Button className="w-full bg-transparent border-2 border-gray-200 text-gray-600" color="primary">
             <GoogleLogo className="w-5"/> Sign Up with Google
           </Button>
           <Button className="w-full bg-transparent border-2 border-gray-200 text-gray-600 mt-1" color="primary">
-            <GithubLogo className="w-5 h-5"/> Sign Up with Github
+            <FacebookLogo className="w-8 -mr-1"/> Sign Up with Facebook
           </Button>
-        </div>
+        </div> */}
 
         <div className="mt-2">
           <span className="text-sm text-gray-500 font-normal">Already have an account? <span onClick={()=>navigate('/login')} className="cursor-pointer font-medium text-blue-500 hover:text-blue-700">Log In</span></span>
