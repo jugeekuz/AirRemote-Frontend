@@ -23,7 +23,7 @@ import usePost from "../hooks/usePost";
 import ModalError from "./ModalError";
 import config from "../configs/config";
 
-export const  ModalAddUser = ({toggleOpen}) => {
+export const  ModalAddUser = ({toggleOpen, setToggleOpen}) => {
 	const authUrl = config.authUrl;
 	const { postItem, success: userAddSuccess, error: userAddError, data: userAddData } = usePost(`${authUrl}/registeruser`);
     
@@ -55,6 +55,7 @@ export const  ModalAddUser = ({toggleOpen}) => {
 	useEffect(()=>{
 		if (isOpen) return;
 		setUserEmail("");
+		setToggleOpen(false);
 	},[isOpen])
 
 	useEffect(() => {
@@ -63,7 +64,7 @@ export const  ModalAddUser = ({toggleOpen}) => {
 	},[userAddSuccess])
 
 	useEffect(() => {
-		onOpen();
+		if (toggleOpen) onOpen();
 	},[toggleOpen])
 	
 	const addUser = () => {

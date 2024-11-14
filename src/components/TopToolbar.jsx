@@ -44,7 +44,7 @@ const TopToolbar = () => {
 							key="invite"
 							startContent={<UserPlus size={18}/>}
 							onClick={() => {
-								setToggleOpen(!toggleOpen);
+								setToggleOpen(true);
 							}}
 						>
 							Invite a friend
@@ -64,7 +64,7 @@ const TopToolbar = () => {
 						
 					</DropdownMenu>
 				</Dropdown>
-				<ModalAddUser toggleOpen={toggleOpen}/>
+				<ModalAddUser toggleOpen={toggleOpen} setToggleOpen={setToggleOpen}/>
 			</div>
 		</div>
 	)	
