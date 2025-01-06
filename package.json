@@ -16,6 +16,7 @@
     "@nextui-org/react": "^2.4.6",
     "amazon-cognito-identity-js": "^6.3.12",
     "axios": "^1.7.7",
+    "crypto-js": "^4.2.0",
     "framer-motion": "^11.3.21",
     "lottie-react": "^2.4.0",
     "lucide-react": "^0.424.0",
