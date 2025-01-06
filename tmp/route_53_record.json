@@ -1,0 +1,17 @@
+{
+    "Comment": "A record for CloudFront distribution",
+    "Changes": [
+        {
+            "Action": "UPSERT",
+            "ResourceRecordSet": {
+                "Name": "air-remote.pro",
+                "Type": "A",
+                "AliasTarget": {
+                    "HostedZoneId": "Z2FDTNDATAQYW2",
+                    "DNSName": "d2p09lvsucyhxe.cloudfront.net",
+                    "EvaluateTargetHealth": false
+                }
+            }
+        }
+    ]
+}

@@ -1,5 +1,9 @@
-![AirRemote Logo](src/assets/imgs/logo-black.png#gh-light-mode-only)
-![AirRemote Logo](src/assets/imgs/logo-white.png#gh-dark-mode-only)
+
+
+<!-- ![AirRemote Logo](../src/assets/imgs/air-remote-logo.jpg) Replace with your logo URL -->
+<!-- <img src="../src/assets/imgs/air-remote-logo.jpg" alt="AirRemote Logo" width="280" /> -->
+
+![AirRemote Logo](../src/assets/imgs/air-remote-logo.jpg)
 
 ---
 
@@ -7,7 +11,7 @@
 
 Turn your old remote-controlled devices into smart devices! With AirRemote, transform any IR-based device into a web-controllable, automated smart solution.
 
-![AirRemote Demo]()
+![AirRemote Demo](iphone.gif)
 
 
 --- 
@@ -30,41 +34,35 @@ With these capabilities, AirRemote turns virtually any device with an IR remote 
 
 The **AirRemote** project is divided into three main components. Each part contains instructions on how to deploy / install it:
 
-- [**Embedded Device:**](https://github.com/jugeekuz/AirRemote-Embedded) 
-    - A C/C++ PlatformIO project, involving ESP32-based unit with an IR receiver and 8 powerful IR blasters. It records IR signals from any remote control and replays them across the room, enabling universal compatibility.
+- [**Embedded Device:**](https://example.com) 
+    - A compact ESP32-based unit with an IR receiver and 8 powerful IR blasters. It records IR signals from any remote control and replays them across the room, enabling universal compatibility.
     
-- [**Serverless Backend:**](https://github.com/jugeekuz/AirRemote-Backend) 
-    - A Python project using Serverless framework to deploy a scalable AWS-based backend powered by Lambda, DynamoDB, API Gateway, and EventBridge. It ensures secure command storage, user authorization, and efficient routing between the web interface and devices.
-
-- [**Frontend (This Repository):**](https://github.com/jugeekuz/AirRemote-Frontend) 
-    - A React JS project providing an application for managing devices, saving IR commands, authenticating users and creating powerful automation routines—all accessible through a sleek web interface.
+- [**Serverless Backend:**](https://example.com) 
+    - A highly scalable AWS-based backend powered by Lambda, DynamoDB, API Gateway, and EventBridge. It ensures secure command storage, user authorization, and efficient routing between the web interface and devices.
+- [**Frontend (This Repository):**](https://example.com) 
+    - A user-friendly React.js application for managing devices, saving IR commands, and creating powerful automation routines—all accessible through a sleek web interface.
 
 ## 🎥 Demo
 Check out the AirRemote in action:
 
-[![Watch the Demo]()](https://www.youtube.com/watch?v=example)
+[![Watch the Demo](iphone.png)](https://www.youtube.com/watch?v=example)
 
 
 ---
 
 ## ⚙️ Installation and Setup
- 1. Make sure you have `npm` version 10.0+ installed in your system:
-    ```bash
-    npm -v
-    ```
- 2. Make sure you have AWS CLI installed and configured:
-    ```bash
-    aws --v
-    ```
- 3. Clone this repository:
-    ```bash
-    git clone https://github.com/jugeekuz/AirRemote-Frontend
-    ```
- 4. Install dependencies:
-    ```bash
-    npm install
-    ```
- 5. Copy .env file produced from the deployment of the [*Serverless Backend*](https://github.com/jugeekuz/AirRemote-Backend) to the root directory of this project.
+ 1. Make sure you have npm installed in you system.
+
+- **Frontend**  
+  - Node.js v16+  
+  - React.js, TailwindCSS, Next UI  
+  ```bash
+  npm install
+  ```
+
+- **Backend**
+  - Python 3.9+
+  - Serverless Framework, AWS Lambda, DynamoDB SDK\
 
 ---
 ## 🚀 Deployment to AWS
@@ -316,10 +314,11 @@ Licensed under the MIT License.
 ---
 
 ## 🤝 Contributing
-Feel free to fork and/or contribute as you'd please!
+Contributions are welcome!
+See our Contributing Guidelines for details.
 
 ---
 
 ## 🛠️ Support
-For issues or questions, open an issue on GitHub.
+For issues or questions, open an issue on GitHub or contact support@example.com.
 

@@ -1,0 +1,19 @@
+{
+    "Name": "AirRemoteCustomCachePolicy",
+    "DefaultTTL": 86400,
+    "MinTTL": 0,
+    "MaxTTL": 31536000,
+    "ParametersInCacheKeyAndForwardedToOrigin": {
+        "EnableAcceptEncodingGzip": true,
+        "EnableAcceptEncodingBrotli": true,
+        "HeadersConfig": {
+            "HeaderBehavior": "none"
+        },
+        "CookiesConfig": {
+            "CookieBehavior": "all"
+        },
+        "QueryStringsConfig": {
+            "QueryStringBehavior": "all"
+        }
+    }
+}

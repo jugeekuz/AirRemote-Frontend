@@ -1,12 +1,20 @@
 {
-    "Version": "2012-10-17",
+    "Version": "2008-10-17",
+    "Id": "PolicyForCloudFrontPrivateContent",
     "Statement": [
-        {
-            "Sid": "PublicReadGetObject",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::air-remote-frontend/*"
-        }
+      {
+        "Sid": "AllowCloudFrontServicePrincipal",
+        "Effect": "Allow",
+        "Principal": {
+            "Service": "cloudfront.amazonaws.com"
+        },
+        "Action": "s3:GetObject",
+        "Resource": "arn:aws:s3:::air-remote.pro/*",
+        "Condition": {
+            "StringEquals": {
+                "AWS:SourceArn": "arn:aws:cloudfront::975050129031:distribution/E1H3B3XIG4F59F"
+            }
+        }        
+      }
     ]
-}
+  }
