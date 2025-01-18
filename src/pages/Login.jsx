@@ -8,7 +8,13 @@ import { useNavigate } from "react-router-dom";
 import { authenticate } from "../services/authenticate";
 import { useAuth } from "../contexts/AuthContext";
 import initiateOAuthFlow from "../services/oauth2";
+import useKeepAlive from "../hooks/useKeepAlive";
+
 const Login = () => {
+  const authUrl = config.authUrl;
+
+  useKeepAlive(`${authUrl}/login/keep-alive`, 6, 1000); // Keep alive data endpoint instances
+
   const navigate = useNavigate();
   const { token, setToken } = useAuth();
   const [loginLoading, setLoginLoading] = useState(false);

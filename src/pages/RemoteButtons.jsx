@@ -80,15 +80,16 @@ const RemoteButtons = () => {
     const onOrderChange = (newItemOrder) => {
       setItemOrder(newItemOrder)
     }
-    return <DraggingProvider>
+    return (
+      length && 
+      <DraggingProvider>
       <TileGrid size={length} itemOrder={itemOrder} onOrderChange={onOrderChange}>
         { buttons.map((item, index) => 
             <TileRemoteButton key={index} id={index} item={item} state={item?.buttonState === "YES"} remoteName={remoteName} refetch={remoteRefetch}/>
           )}
       </TileGrid> 
-    </DraggingProvider>
+    </DraggingProvider>)
   }
-  
 
   return (
         <>

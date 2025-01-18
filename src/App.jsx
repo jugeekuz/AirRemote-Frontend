@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes, Link, Navigate, Outlet } from 'react-rout
 import { Sidebar, SidebarItem } from './components/Sidebar';
 import {NavigationBar, NavigationBarItem} from './components/NavigationBar';
 import { LayoutDashboard, Usb, CalendarCog } from 'lucide-react';
+import config from "./configs/config";
 import Remote2 from './assets/icons/remote.svg?react';
 
 import Remote from './assets/icons/remote-access.svg?react';
@@ -17,10 +18,18 @@ import Login from './pages/Login';
 import OAuth2Callback from './pages/OAuth2Callback';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import useKeepAlive from './hooks/useKeepAlive';
 function App() {
+  const apiUrl = config.apiUrl;
+  const baseUrl = config.baseUrl;
+  const authUrl = config.authUrl;
+  
+  useKeepAlive(`${apiUrl}/keep-alive`, 6, 5000); // Keep alive data endpoint instances
+  useKeepAlive(`${baseUrl}/wss/keep-alive`, 1, 1500); // Keep alive websocket handler instance
+  useKeepAlive(`${authUrl}/keep-alive`, 1, 1500); // Keep alive refresh token handler instance
+
 	const location = useLocation();
   const navigate = useNavigate();
-
   return (
       <div className="flex flex-col sm:flex-row w-screen h-100dvh sm:px-0 bg-white">
         <AuthProvider>

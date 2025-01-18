@@ -54,7 +54,7 @@ Check out the AirRemote in action:
     ```
  2. Make sure you have AWS CLI installed and configured:
     ```bash
-    aws --v
+    aws --version
     ```
  3. Clone this repository:
     ```bash
@@ -66,6 +66,10 @@ Check out the AirRemote in action:
     ```
  5. Copy .env file produced from the deployment of the [*Serverless Backend*](https://github.com/jugeekuz/AirRemote-Backend) to the root directory of this project.
 
+ 6. Build the production build of the project:
+    ```bash
+    npm run build
+    ```
 ---
 ## 🚀 Deployment to AWS
 
@@ -316,7 +320,8 @@ Licensed under the MIT License.
 ---
 
 ## 🤝 Contributing
-Feel free to fork and/or contribute as you'd please!
+Feel free to fork the repository and contribute! Pull requests and feedback are welcome.
+
 
 ---
 
