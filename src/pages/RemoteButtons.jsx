@@ -25,6 +25,7 @@ const RemoteButtons = () => {
 	const { remoteName } = useParams();
   const attributes = useError("");
   const [macAddress, setMacAddress] = useState(null);
+  const [buttonsLength, setButtonsLength] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
   const { data: remoteData, loading, error: remoteError, refetch: remoteRefetch } = useFetchMemo(`${apiUrl}/remotes/${remoteName}`);
   const { data: deviceData, loading: deviceLoading, error: deviceError, refetch: deviceRefetch } = useFetchMemo(macAddress ? `${apiUrl}/devices/${macAddress}` : null);
@@ -37,6 +38,9 @@ const RemoteButtons = () => {
     setMacAddress(remoteData.macAddress);
     originalOrder.current = Array.from({ length: remoteData.buttons.length }, (_, i) => i);
     deviceRefetch();
+    if (remoteData?.buttons.length > 0) {
+      setButtonsLength(remoteData.buttons.length)
+    } 
   }, [remoteData]);
 
   useEffect(() => {
@@ -54,7 +58,7 @@ const RemoteButtons = () => {
     attributes.setError(deviceError);
   },[deviceError])
 
-  const Grid = ({ length, itemOrder, buttons, remoteName }) => {
+  const Grid = ({ length, itemOrder, buttons, data, remoteName }) => {
     const { editMode } = useContext(EditModeContext);
 
     useEffect(() => {
@@ -80,13 +84,14 @@ const RemoteButtons = () => {
     const onOrderChange = (newItemOrder) => {
       setItemOrder(newItemOrder)
     }
-    return (
-      length && 
-      <DraggingProvider>
+    return (data &&
+    <DraggingProvider>
       <TileGrid size={length} itemOrder={itemOrder} onOrderChange={onOrderChange}>
-        { buttons.map((item, index) => 
+        { 
+          buttons.map((item, index) => 
             <TileRemoteButton key={index} id={index} item={item} state={item?.buttonState === "YES"} remoteName={remoteName} refetch={remoteRefetch}/>
-          )}
+          )
+        }
       </TileGrid> 
     </DraggingProvider>)
   }
@@ -128,9 +133,9 @@ const RemoteButtons = () => {
               </div>
             </div>
             {/* Buttons Grid */}
-            {remoteData && remoteData?.buttons.length !== 0
+            {remoteData && remoteData?.buttons && remoteData?.buttons.length > 0
               ?
-                <Grid length={remoteData.buttons.length} buttons={remoteData.buttons} remoteName={remoteName} itemOrder={itemOrder} />
+                <Grid length={buttonsLength} buttons={remoteData.buttons} data={remoteData} remoteName={remoteName} itemOrder={itemOrder} />
               : <EmptyTiles text={"No remote buttons available"}/>
             }
           </EditModeProvider>
