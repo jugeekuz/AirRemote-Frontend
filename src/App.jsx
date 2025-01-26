@@ -24,9 +24,9 @@ function App() {
   const baseUrl = config.baseUrl;
   const authUrl = config.authUrl;
   
-  useKeepAlive(`${apiUrl}/keep-alive`, 6, 5000); // Keep alive data endpoint instances
-  useKeepAlive(`${baseUrl}/wss/keep-alive`, 1, 1500); // Keep alive websocket handler instance
-  useKeepAlive(`${authUrl}/keep-alive`, 1, 1500); // Keep alive refresh token handler instance
+  useKeepAlive(`${apiUrl}/keep-alive`, 6, 15000); // Keep alive data endpoint instances
+  useKeepAlive(`${baseUrl}/wss/keep-alive`, 1, 15000); // Keep alive websocket handler instance
+  useKeepAlive(`${authUrl}/keep-alive`, 1, 10000); // Keep alive refresh token handler instance
 
 	const location = useLocation();
   const navigate = useNavigate();
