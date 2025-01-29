@@ -4,11 +4,11 @@
         {
             "Action": "UPSERT",
             "ResourceRecordSet": {
-                "Name": "air-remote.pro",
+                "Name": "<your-domain>",
                 "Type": "A",
                 "AliasTarget": {
                     "HostedZoneId": "Z2FDTNDATAQYW2",
-                    "DNSName": "d2p09lvsucyhxe.cloudfront.net",
+                    "DNSName": "<CLOUDFRONT_DOMAIN_NAME>",
                     "EvaluateTargetHealth": false
                 }
             }

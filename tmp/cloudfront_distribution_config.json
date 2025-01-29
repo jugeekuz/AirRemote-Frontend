@@ -1,46 +1,63 @@
 {
-  "CallerReference": "'CLOUDFRONT_AIRREMOTE_DISTRIBUTION'",
-  "Comment": "Air Remote CloudFront Distribution",
-  "Enabled": true,
-  "Aliases": {
-    "Quantity": 1,
-    "Items": ["air-remote.pro"]
-  },
-  "Origins": {
-    "Quantity": 1,
-    "Items": [
-      {
-        "Id": "air-remote-pro-origin",
-        "DomainName": "air-remote.pro.s3.eu-central-1.amazonaws.com",
-        "OriginAccessControlId": "E1POOJGWN3LFV8",
-        "S3OriginConfig": {
-          "OriginAccessIdentity": ""
-        }
-      }
-    ]
-  },
-  "DefaultCacheBehavior": {
-    "TargetOriginId": "air-remote-pro-origin",
-    "ViewerProtocolPolicy": "redirect-to-https",
-    "AllowedMethods": {
-      "Quantity": 2,
-      "Items": ["GET", "HEAD"]
+    "CallerReference": "'CLOUDFRONT_AIRREMOTE_DISTRIBUTION'",
+    "Comment": "Air Remote CloudFront Distribution",
+    "Enabled": true,
+    "Aliases": {
+        "Quantity": 1,
+        "Items": ["<your-domain>"]
     },
-    "CachePolicyId": "b329872d-a96b-4a3a-a0cf-1d746ee8a6ea"
-  },
-  "ViewerCertificate": {
-    "ACMCertificateArn": "arn:aws:acm:us-east-1:975050129031:certificate/fe5b4516-0f9a-4f35-bc84-894e9f4fe671",
-    "SSLSupportMethod": "sni-only",
-    "MinimumProtocolVersion": "TLSv1.2_2021"
-  },
-  "Restrictions": {
-    "GeoRestriction": {
-      "RestrictionType": "none",
-      "Quantity": 0
-    }
-  },
-  "HttpVersion": "http2",
-  "IsIPV6Enabled": true,
-  "DefaultRootObject": "index.html",
-  "WebACLId": ""
+    "Origins": {
+        "Quantity": 1,
+        "Items": [
+        {
+            "Id": "air-remote-origin",
+            "DomainName": "<your-domain>.s3.eu-central-1.amazonaws.com",
+            "OriginAccessControlId": "<ORIGIN-ACCESS-CONTROL-ID>",
+            "S3OriginConfig": {
+            "OriginAccessIdentity": ""
+            }
+        }
+        ]
+    },
+    "DefaultCacheBehavior": {
+        "TargetOriginId": "air-remote-origin",
+        "ViewerProtocolPolicy": "redirect-to-https",
+        "AllowedMethods": {
+        "Quantity": 2,
+        "Items": ["GET", "HEAD"]
+        },
+        "CachePolicyId": "<CACHE_POLICY_ID>"
+    },
+    "ViewerCertificate": {
+        "ACMCertificateArn": "<ACM_CERTIFICATE_ARN>",
+        "SSLSupportMethod": "sni-only",
+        "MinimumProtocolVersion": "TLSv1.2_2021"
+    },
+    "Restrictions": {
+        "GeoRestriction": {
+        "RestrictionType": "none",
+        "Quantity": 0
+        }
+    },
+    "CustomErrorResponses": {
+        "Quantity": 2,
+        "Items": [
+            {
+            "ErrorCode": 403,
+            "ResponsePagePath": "/index.html",
+            "ResponseCode": "200",
+            "ErrorCachingMinTTL": 300
+            },
+            {
+            "ErrorCode": 404,
+            "ResponsePagePath": "/index.html",
+            "ResponseCode": "200",
+            "ErrorCachingMinTTL": 300
+            }
+        ]
+    },
+    "HttpVersion": "http2",
+    "IsIPV6Enabled": true,
+    "DefaultRootObject": "index.html",
+    "WebACLId": ""
 }

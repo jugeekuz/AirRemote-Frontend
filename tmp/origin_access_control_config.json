@@ -1,6 +1,6 @@
 {
-    "Name": "air-remote-pro-access-control",
-    "Description": "OAC for air-remote.pro bucket",
+    "Name": "air-remote-access-control",
+    "Description": "OAC for AirRemote bucket",
     "SigningProtocol": "sigv4",
     "SigningBehavior": "always",
     "OriginAccessControlOriginType": "s3"

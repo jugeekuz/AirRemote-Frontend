@@ -3,10 +3,10 @@
         {
             "Action": "UPSERT",
             "ResourceRecordSet": {
-                "Name": "_f47bc4f0f48ff6c077f3eaf1b0a874cb.air-remote.pro.",
+                "Name": "<CNAME_name_from_acm>" ,
                 "Type": "CNAME",
                 "TTL": 300,
-                "ResourceRecords": [{"Value": "_3e04b7b467b5d1093b505efb57c410d7.djqtsrsxkq.acm-validations.aws."}]
+                "ResourceRecords": [{"Value": "<CNAME_value_from_acm>"}]
             }
         }
     ]
