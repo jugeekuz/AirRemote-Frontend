@@ -32,26 +32,26 @@ AirRemote is a solution designed to modernize legacy remote-controlled devices b
 With these capabilities, AirRemote turns virtually any device with an IR remote into a smart, remotely controllable appliance.
 
 ## 🎥 Demo
-<div align="center" style="display: flex; flex-direction: row; justify-content: center; gap: 5px; flex-wrap: wrap;">
-  <div style="flex: 0 0 250px;">
+<div align="center" style="display: flex; flex-direction: row; justify-content: center; gap: 1px; flex-wrap: wrap;">
+  <div style="flex: 0 0 200px;">
     <h4>Login & Dashboard</h4>
-    <img src="./src/assets/imgs/login.gif" alt="Demo 1" width="250">
+    <img src="./src/assets/imgs/login.gif" alt="Demo 1" width="200">
   </div>
-  <div style="flex: 0 0 250px;">
+  <div style="flex: 0 0 200px;">
     <h4>Add Remote and Execute</h4>
-    <img src="./src/assets/imgs/demo.gif" alt="Demo 2" width="250">
+    <img src="./src/assets/imgs/demo.gif" alt="Demo 2" width="200">
   </div>
-  <div style="flex: 0 0 250px;">
+  <div style="flex: 0 0 200px;">
     <h4>Create Automations</h4>
-    <img src="./src/assets/imgs/automations.gif" width="250">
+    <img src="./src/assets/imgs/automations.gif" width="200">
   </div>
-  <div style="flex: 0 0 250px;">
+  <div style="flex: 0 0 200px;">
     <h4>Register Devices</h4>
-    <img src="./src/assets/imgs/wifi-setup.gif" width="250">
+    <img src="./src/assets/imgs/wifi-setup.gif" width="200">
   </div>
-  <div style="flex: 0 0 250px;">
+  <div style="flex: 0 0 200px;">
     <h4>Reorder & Edit tiles</h4>
-    <img src="./src/assets/imgs/rearrange.gif" width="250">
+    <img src="./src/assets/imgs/rearrange.gif" width="200">
   </div>
 </div>
 
