@@ -1,18 +1,18 @@
 <p align="center">
-  <img width="340" src="src/assets/logo-black.png#gh-light-mode-only" alt="AirRemote Logo">
-  <img width="340" src="src/assets/logo-white.png#gh-dark-mode-only" alt="AirRemote Logo">
+  <img width="340" src="src/assets/imgs/logo-black.png#gh-light-mode-only" alt="AirRemote Logo">
+  <img width="340" src="src/assets/imgs/logo-white.png#gh-dark-mode-only" alt="AirRemote Logo">
 </p>
-<h2 align="center">AirRemote Embedded Repository ⚡</h2>
+<h2 align="center">AirRemote Frontend Repository ⚡</h2>
 <p align="center">
     <a href="/LICENSE"><img alt="GPL-V3.0 License" src="https://img.shields.io/badge/License-GPLv3-orange.svg"></a>
-    <a href="https://github.com/jugeekuz/AirRemote-Embedded/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/jugeekuz/AirRemote-Embedded?color=green"></a>
+    <a href="https://github.com/jugeekuz/AirRemote-Frontend/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/jugeekuz/AirRemote-Frontend?color=green"></a>
     <a href="https://www.linkedin.com/in/anastasiosdiamantis"><img alt="Connect on LinkedIn" src="https://img.shields.io/badge/Connect%20on-LinkedIn-blue.svg"></a>
 </p><br>
 
 Turn your old remote-controlled devices into smart devices! With AirRemote, you can turn any legacy device that can be controlled by an IR remote, into a remotely accesible smart device.
 
 <p align="center">
-    <img src="./src/assets/air-remote-demo-short.gif" alt="AirRemote Short Demo" width="320">
+    <img src="./src/assets/imgs/air-remote-demo-short.gif" alt="AirRemote Short Demo" width="320">
 </p>
 
 
@@ -31,17 +31,41 @@ AirRemote is a solution designed to modernize legacy remote-controlled devices b
 
 With these capabilities, AirRemote turns virtually any device with an IR remote into a smart, remotely controllable appliance.
 
+## 🎥 Demo
+<div align="center" style="display: flex; flex-direction: row; justify-content: center; gap: 10px; flex-wrap: wrap;">
+  <div>
+    <h4>Login & Dashboard</h4>
+    <img src="./src/assets/imgs/air-remote-demo-short.gif" alt="Demo 1" width="300">
+  </div>
+  <div>
+    <h4>Add Remote and Execute</h4>
+    <img src="./src/assets/imgs/air-remote-demo-short.gif" alt="Demo 2" width="300">
+  </div>
+  <div>
+    <h4>Create Automations</h4>
+    <img src="./src/assets/imgs/air-remote-demo-short.gif" width="300">
+  </div>
+  <div>
+    <h4>Register Devices</h4>
+    <img src="./src/assets/imgs/air-remote-demo-short.gif" width="300">
+  </div>
+  <div>
+    <h4>Reorder & Edit tiles</h4>
+    <img src="./src/assets/imgs/air-remote-demo-short.gif" width="300">
+  </div>
+</div>
+
 ## 🌟 Project Overview
 
 The **AirRemote** project is divided into three main components. Each part contains instructions on how to deploy / install it:
 
-- [**Embedded Device (This Repository):**](https://github.com/jugeekuz/AirRemote-Embedded) 
+- [**Embedded Device:**](https://github.com/jugeekuz/AirRemote-Embedded) 
     - A C/C++ PlatformIO project, involving ESP32-based unit with an IR receiver and 8 powerful IR blasters. It records IR signals from any remote control and replays them across the room, enabling universal compatibility.
     
 - [**Serverless Backend:**](https://github.com/jugeekuz/AirRemote-Backend) 
     - A Python project using Serverless framework to deploy a scalable AWS-based backend powered by Lambda, DynamoDB, API Gateway, and EventBridge. It ensures secure command storage, user authorization, and efficient routing between the web interface and devices.
 
-- [**Frontend:**](https://github.com/jugeekuz/AirRemote-Frontend) 
+- [**Frontend (This Repository):**](https://github.com/jugeekuz/AirRemote-Frontend) 
     - A React JS project providing an application for managing devices, saving IR commands, authenticating users and creating powerful automation routines—all accessible through a sleek web interface.
 
 ---
@@ -321,7 +345,7 @@ The **AirRemote** project is divided into three main components. Each part conta
         ```bash
         aws route53 get-change --id <CHANGE_ID>
         ```
-16. #### Provide API endpoints obtained from backend deployment
+16. #### Deploy backend and provide .env file
     1. If you haven't already, deploy the [AirRemote Backend](https://github.com/jugeekuz/AirRemote-Backend).
 
     2. In the `/output` folder of the serverless project (after deployment) there will be a `.env` file containing the API endpoints. Copy it to the root directory of this project.
@@ -340,6 +364,59 @@ The **AirRemote** project is divided into three main components. Each part conta
         ```bash
         aws cloudfront create-invalidation --distribution-id <CLOUDFRONT_DISTRIBUTION_ID> --paths "/*"
         ```
+
+17. #### Create Custom Domain Mappings for API Gateway
+    1. Obtain your ACM Certificate ARN:
+        ```bash
+        aws acm request-certificate --domain-name "*.<YOUR-DOMAIN>" --validation-method DNS --output text  --query 'CertificateArn' --region <YOUR-REGION>
+        ```
+    2. Wait for the Certificate to be issued (check `Status` to be `ISSUED`):
+        ```bash
+        aws acm describe-certificate --certificate-arn "<CERTIFICATE-ARN>"
+        ```
+    3. Create custom domain name for `api.<YOUR-DOMAIN>`, `auth.<YOUR-DOMAIN>`, `wss.<YOUR-DOMAIN>` (repeat for each subdomain):
+        ```bash
+        aws apigatewayv2 create-domain-name --domain-name "api.karipid.store" --domain-name-configurations "CertificateArn=arn:aws:acm:eu-central-1:975050129031:certificate/75cecf7d-d5dc-48d8-8e70-50b4af4bc1d9,EndpointType=REGIONAL"
+        ```
+    4. Get your Websocket and Rest API Gateway IDs (The names are `<STAGE>-air-remote-backend-websockets` & `<STAGE>-air-remote-backend`):
+        ```bash
+        aws apigatewayv2 get-apis
+        aws apigateway get-rest-apis
+        ```
+    5. Map Domains `api.`, `auth.` to Rest API (repeat for both):
+        ```bash
+        aws apigateway create-base-path-mapping --domain-name "<SUBDOMAIN>.<YOUR-DOMAIN>" --rest-api-id "<REST-API-ID>" --stage "prod"
+        ```
+    6. Map `wss.` domain to your Websocket API:
+        ```bash
+        aws apigatewayv2 create-api-mapping --domain-name "wss.<YOUR-DOMAIN>" --api-id "<WSS-ID>" --stage "prod" --api-mapping-key "(none)"
+        ```
+    7. For each of the subdomains `api.`,`auth.` and `wss.` search for `ApiGatewayDomainName` that will be in this format `d-xyz1234.execute-api.eu-central-1.amazonaws.com`, along with `HostedZoneId`:
+        ```bash
+        aws apigatewayv2 get-domain-name --domain-name "<SUBDOMAIN>.<YOUR-DOMAIN>"
+        ```
+    8. Create an Alias (A) record (replace `<ROUTE-53-HOSTED-ZONE-ID>` with the hosted zone id you can obtain using `aws route53 list-hosted-zones` and `<HOSTED-ZONE-ID>` with the one from previous step), for each of the subdomains:
+        ```bash
+        aws route53 change-resource-record-sets --hosted-zone-id <ROUTE-53-HOSTED-ZONE-ID> --change-batch '{
+        "Changes": [
+            {
+                "Action": "CREATE",
+                "ResourceRecordSet": {
+                    "Name": "<SUBDOMAIN>.<YOUR-DOMAIN>",
+                    "Type": "A",
+                    "AliasTarget": {
+                        "HostedZoneId": "<HOSTED-ZONE-ID>", 
+                        "DNSName": "<API-GATEWAY-DOMAIN-NAME>",
+                        "EvaluateTargetHealth": false
+                    }
+                }
+            }
+        ]
+        }'
+        ```
+17. #### 🎉 You're ready.
+  You can go ahead and sign up with your admin email and begin using the app!
+    
 ---
 
 ## 📜 License
