@@ -12,7 +12,7 @@
 Turn your old remote-controlled devices into smart devices! With AirRemote, you can turn any legacy device that can be controlled by an IR remote, into a remotely accesible smart device.
 
 <p align="center">
-    <img src="./src/assets/imgs/air-remote-demo-short.gif" alt="AirRemote Short Demo" width="320">
+    <img src="./src/assets/imgs/demo.gif" alt="AirRemote Short Demo" width="320">
 </p>
 
 
@@ -35,23 +35,23 @@ With these capabilities, AirRemote turns virtually any device with an IR remote 
 <div align="center" style="display: flex; flex-direction: row; justify-content: center; gap: 10px; flex-wrap: wrap;">
   <div>
     <h4>Login & Dashboard</h4>
-    <img src="./src/assets/imgs/air-remote-demo-short.gif" alt="Demo 1" width="300">
+    <img src="./src/assets/imgs/login.gif" alt="Demo 1" width="300">
   </div>
   <div>
     <h4>Add Remote and Execute</h4>
-    <img src="./src/assets/imgs/air-remote-demo-short.gif" alt="Demo 2" width="300">
+    <img src="./src/assets/imgs/demo.gif" alt="Demo 2" width="300">
   </div>
   <div>
     <h4>Create Automations</h4>
-    <img src="./src/assets/imgs/air-remote-demo-short.gif" width="300">
+    <img src="./src/assets/imgs/automations.gif" width="300">
   </div>
   <div>
     <h4>Register Devices</h4>
-    <img src="./src/assets/imgs/air-remote-demo-short.gif" width="300">
+    <img src="./src/assets/imgs/wifi-setup.gif" width="300">
   </div>
   <div>
     <h4>Reorder & Edit tiles</h4>
-    <img src="./src/assets/imgs/air-remote-demo-short.gif" width="300">
+    <img src="./src/assets/imgs/rearrange.gif" width="300">
   </div>
 </div>
 
@@ -134,7 +134,7 @@ The **AirRemote** project is divided into three main components. Each part conta
         aws acm describe-certificate --certificate-arn <your-certificate-arn> --region us-east-1
         ```
 
-    2. Save the following config in `tmp/acm_validation_config.json` (replace <CNAME_name_from_acm> and <CNAME_value_from_acm> w/ the values retrieved from the output of previous command under `ResourceRecord`) :
+    2. Save the following config in `tmp/acm_validation_config.json` (replace `<CNAME_name_from_acm>` and `<CNAME_value_from_acm>` w/ the values retrieved from the output of previous command under `ResourceRecord`) :
         ```json
         {
             "Changes": [
